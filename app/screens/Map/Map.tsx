@@ -295,7 +295,7 @@ export default function Map({theme}:any) {
                     }
                 }}
                 onRegionChange={(region) => {
-                    if(region.latitudeDelta > 0.01) {
+                    if(region.latitudeDelta > 0.05) {
                         setSimplifyIcons(true);
                     } else {
                         setSimplifyIcons(false);
