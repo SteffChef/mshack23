@@ -239,7 +239,16 @@ export default function Map({theme}:any) {
         }
         ]
     
+    const msCoords = {
+        latitude: 51.96236,
+        longitude: 7.62571,
+        latitudeDelta: 0.05,
+        longitudeDelta: 0.05,
+    }
+    
     const [mapTheme, setMapTheme] = useState(mapDefault);
+    const [initialRegion, setInitialRegion] = useState(msCoords)
+    const [region, setRegion] = useState(msCoords)
 
     useEffect(() => {
         if (theme === 'dark') {
@@ -253,7 +262,22 @@ export default function Map({theme}:any) {
         <View style={styles.container}>
             <MapView   
                 style={styles.map}
-                customMapStyle={mapTheme} 
+                customMapStyle={mapTheme}
+                initialRegion={initialRegion}
+                loadingEnabled={true}
+                showsUserLocation={true}
+                showsMyLocationButton={true}
+                region={region}
+                provider='google'
+                onUserLocationChange={(event) => {
+                    const coordinates:any = event.nativeEvent.coordinate;
+                    setRegion({
+                        latitude: coordinates.latitude,
+                        longitude: coordinates.longitude,
+                        latitudeDelta: 0.05,
+                        longitudeDelta: 0.05,
+                    });
+                }}
             />
         </View>
     );
