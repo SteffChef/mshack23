@@ -32,40 +32,34 @@ const DetailsModal = ({ modalVisible, setModalVisible }: Props) => {
       style={{ height: "100%" }}
     >
       <Button title="Close" onPress={() => setModalVisible(false)}></Button>
-      <ScrollView style={{ margin: 8, height: "100%", backgroundColor: "red" }}>
-        <View style={{ justifyContent: "space-between" }}>
-          <View>
-            <View style={styles.headerContainer}>
-              <View style={styles.innerContainer}>
-                <Text style={{ color: colors.text, ...styles.title }}>
-                  {mock.name}
-                </Text>
-                <Text style={{ color: colors.text, fontSize: 18, bottom: 0 }}>
-                  {mock.openingHours}
-                </Text>
-              </View>
-            </View>
-            <Text style={{ color: colors.text, fontSize: 18 }}>
-              {mock.adress}
+      <View style={{ flex: 1, margin: 8 }}>
+        <View style={styles.headerContainer}>
+          <View style={styles.innerContainer}>
+            <Text style={{ color: colors.text, ...styles.title }}>
+              {mock.name}
             </Text>
-            <View style={{ height: 55, borderRadius: 5, paddingVertical: 5 }}>
-              <CategoryDrawer
-                activeCategory={""}
-                handleCategoryPress={() => {}}
-              />
-            </View>
-            <View style={styles.descriptionContainer}>
-              <Text style={{ color: colors.text, ...styles.description }}>
-                {mock.description}
-              </Text>
-            </View>
-            <Text style={{ color: colors.text }}>{mock.isBookmarked}</Text>
-          </View>
-          <View style={styles.mapIcon}>
-            <FontAwesome name="map-marker" size={38} y color="black" />
           </View>
         </View>
-      </ScrollView>
+        <View style={{ height: 55, borderRadius: 5, paddingVertical: 5, marginTop: 10 }}>
+          <CategoryDrawer
+            activeCategory={""}
+            handleCategoryPress={() => {}}
+          />
+        </View>
+        <ScrollView style={styles.descriptionContainer}>
+          <Text style={{ color: colors.text, ...styles.description }}>
+            {mock.description}
+          </Text>
+        </ScrollView>
+        <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+          <Text style={{ color: colors.text, fontSize: 18 }}>
+            {mock.openingHours}
+          </Text>
+          <View style={styles.mapIcon}>
+            <FontAwesome name="map-marker" size={38} color="black" />
+          </View>
+        </View>
+      </View>
     </Modal>
   );
 };
@@ -74,6 +68,7 @@ export default DetailsModal;
 
 const styles = StyleSheet.create({
   descriptionContainer: {
+    flex: 1,
     marginTop: 10,
     paddingLeft: 9,
     paddingBottom: 8,
@@ -97,9 +92,6 @@ const styles = StyleSheet.create({
     fontSize: 20,
   },
   mapIcon: {
-    position: "absolute",
-    bottom: 0,
-    right: 0,
     margin: 16, // Adjust the margin as needed
     borderRadius: 30,
     borderWidth: 2,
