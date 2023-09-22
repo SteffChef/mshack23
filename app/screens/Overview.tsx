@@ -5,14 +5,19 @@ import SearchBar from "./SearchBar";
 import OverviewCard from "./OverviewCard";
 import CategoryDrawer from "./CategoryDrawer";
 import DetailsModal from "./DetailsModal";
+import { ApiDatatype } from "./APIInterface";
 
-const Overview = () => {
+interface Props {
+  data: ApiDatatype[];
+}
+
+const Overview = ({ data }: Props) => {
   const { colors } = useTheme();
 
   const [modalVisible, setModalVisible] = useState(false);
 
   const [searchInput, setSearchInput] = useState("");
-  const [activeCategory, setActiveCategory] = useState<string>("Kleidung");
+  const [activeCategory, setActiveCategory] = useState<string>("");
 
   const handleCategoryPress = (text: string) => {
     if (text === activeCategory) {
@@ -27,61 +32,6 @@ const Overview = () => {
     distance: number;
     categories: string[];
   }
-
-  const data: datatype[] = [
-    {
-      name: "Station",
-      distance: 500,
-      categories: [
-        "clothing",
-        "household",
-        "toys",
-        "media",
-        "electronics",
-        "bicycles",
-        "furniture",
-      ],
-    },
-    {
-      name: "Station",
-      distance: 500,
-      categories: [
-        "clothing",
-        "household",
-        "toys",
-        "media",
-        "electronics",
-        "bicycles",
-        "furniture",
-      ],
-    },
-    {
-      name: "Station",
-      distance: 500,
-      categories: [
-        "clothing",
-        "household",
-        "toys",
-        "media",
-        "electronics",
-        "bicycles",
-        "furniture",
-      ],
-    },
-    {
-      name: "Station",
-      distance: 500,
-      categories: [
-        "clothing",
-        "household",
-        "toys",
-        "media",
-        "electronics",
-        "bicycles",
-        "furniture",
-      ],
-    },
-  ];
 
   return (
     <View
@@ -107,15 +57,17 @@ const Overview = () => {
       />
       <ScrollView style={styles.cardContainer}>
         {data
-          .filter(
-            (item) =>
-              item.categories.includes(activeCategory) || activeCategory === ""
+          .filter((item) =>
+            item.categories.some(
+              (category) =>
+                category.name === activeCategory || activeCategory === ""
+            )
           )
-          .map((item: datatype, index) => (
+          .map((item, index) => (
             <OverviewCard
               name={item.name}
-              distance={item.distance}
-              categories={item.categories}
+              distance={50}
+              categories={item.categories.map((item) => item.name)}
               key={index}
               activeCategory={activeCategory}
               setModalVisible={setModalVisible}

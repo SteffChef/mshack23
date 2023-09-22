@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { NavigationContainer, useTheme } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import Overview from "./Overview";
@@ -9,11 +9,15 @@ import { CustomDarkTheme, CustomLightTheme } from "../colorScheme/Theme";
 import ThemeToggle from "./ThemeToggle";
 import { FontAwesome5 } from "@expo/vector-icons";
 import { FontAwesome } from "@expo/vector-icons";
+import Bookmarks from "./Bookmarks";
+import { ApiDatatype } from "./APIInterface";
 
 const NavigationComponent = () => {
   const { colors } = useTheme();
 
   const HomeLayout = createBottomTabNavigator();
+
+  const [data, setData] = useState<any>([]);
 
   const HomeIcon = ({ color }: any) => {
     return <FontAwesome5 name="home" size={24} color={color} />;
@@ -22,13 +26,31 @@ const NavigationComponent = () => {
     return <FontAwesome name="bookmark" size={24} color={color} />;
   };
 
+  const fetchData = async () => {
+    fetch("http://172.16.2.102:8080/location/all", { method: "GET" })
+      .then((response) => response.json())
+      .then((json) => {
+        setData(json);
+      })
+      .catch((error) => console.error(error));
+  };
+
+  const OverviewContent = () => {
+    return <Overview data={data} />;
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
   return (
     <HomeLayout.Navigator
       screenOptions={{ tabBarActiveTintColor: colors.primary }}
     >
       <HomeLayout.Screen
         name="Überblick"
-        component={Overview}
+        initialParams={data}
+        component={OverviewContent}
         options={{ headerRight: ThemeToggle, tabBarIcon: HomeIcon }}
       />
       <HomeLayout.Screen
@@ -38,7 +60,7 @@ const NavigationComponent = () => {
       />
       <HomeLayout.Screen
         name="Lesezeichen"
-        component={Page2}
+        component={Bookmarks}
         options={{ headerRight: ThemeToggle, tabBarIcon: BookmarkIcon }}
       />
     </HomeLayout.Navigator>
@@ -48,10 +70,9 @@ const NavigationComponent = () => {
 const MapCall = () => {
   const themeContext = useContext(ThemeContext);
 
-  return (
-    <Map theme={themeContext.themeState}/>
-  )
-}
+  return <Map theme={themeContext.themeState} />;
+};
+
 const Home = () => {
   const themeContext = useContext(ThemeContext);
 
