@@ -19,30 +19,32 @@ export default function MapMarker({ markerData, id, theme, simplify }:any) {
     }, [theme]);
 
     const iconTable: { [key: string]: JSX.Element } = {
-        TShirt: <FontAwesome5 name="tshirt" size={iconSize} color={iconColor} />,
-        // add more icons here
+        1: <FontAwesome5 name="tshirt" size={iconSize} color={iconColor} />,
+        2: <FontAwesome5 name="utensils" size={iconSize} color={iconColor} />,
+        3: <FontAwesome5 name="shopping-bag" size={iconSize} color={iconColor} />,
+        4: <FontAwesome5 name="home" size={iconSize} color={iconColor} />,
     };
 
-    function iconArrangement(icons: any) {
+    function iconArrangement(categories: any) {
         if(simplify) {
             return (
                 <FontAwesome5 name="map-pin" size={24} color={iconColor} />
             );
         }
-        const lenght = Object.keys(icons).length;
+        const lenght = Object.keys(categories).length;
         switch (lenght) {
             case 1:
                 return (
                     <View style={[styles.oneCircle, {borderColor:iconColor}]}>
-                        {iconTable[icons[0]]}
+                        {iconTable[categories[0].id]}
                     </View>
                 );
             case 2:
                 return (
                     <View style={[styles.oneCircle, {borderColor:iconColor}]}>
                         <View style={styles.row}>
-                            {iconTable[icons[0]]}
-                            {iconTable[icons[1]]}
+                            {iconTable[categories[0].id]}
+                            {iconTable[categories[1].id]}
                         </View>
                     </View>
 
@@ -51,11 +53,11 @@ export default function MapMarker({ markerData, id, theme, simplify }:any) {
                 return (
                     <View style={[styles.twoCircle, {borderColor:iconColor}]}>
                         <View style={styles.row}>
-                            {iconTable[icons[0]]}
-                            {iconTable[icons[1]]}
+                            {iconTable[categories[0].id]}
+                            {iconTable[categories[1].id]}
                         </View>
                         <View style={styles.row}>
-                            {iconTable[icons[2]]}
+                            {iconTable[categories[2].id]}
                         </View>
                     </View>
                 );
@@ -64,12 +66,12 @@ export default function MapMarker({ markerData, id, theme, simplify }:any) {
                     <View style={[styles.twoCircle, {borderColor:iconColor}]}>
                         <View style={styles.row}
                         >
-                            {iconTable[icons[0]]}
-                            {iconTable[icons[1]]}
+                            {iconTable[categories[0].id]}
+                            {iconTable[categories[1].id]}
                         </View>
                         <View style={styles.row}
                         >
-                            {iconTable[icons[2]]}
+                            {iconTable[categories[2].id]}
                             <Feather name="more-horizontal" size={iconSize} color="black" />
                         </View>
                     </View>
@@ -84,10 +86,9 @@ export default function MapMarker({ markerData, id, theme, simplify }:any) {
                 latitude: markerData.latitude,
                 longitude: markerData.longitude,
             }}
-            title={markerData.title}
-            description={markerData.description}
+            title={markerData.name}
         >
-            {iconArrangement(markerData.icons)}
+            {iconArrangement(markerData.categories)}
         </Marker>
     );
     }

@@ -252,14 +252,7 @@ export default function Map({theme}:any) {
     const [region, setRegion] = useState(msCoords)
     const [mapAlreadyChanged, setMapAlreadyChanged] = useState(false);
     const [simplifyIcons, setSimplifyIcons] = useState(false);
-    const [markers, setMarkers] = useState([{
-        id: 1,
-        title: 'Test',
-        description: 'Test',
-        latitude: 51.96236,
-        longitude: 7.62571,
-        icons: ["TShirt", "TShirt", "TShirt", "TShirt"]
-    }]);
+    const [markers, setMarkers] = useState([]);
 
     useEffect(() => {
         if (theme === 'dark') {
@@ -269,12 +262,12 @@ export default function Map({theme}:any) {
         }
     }, [theme]);
 
-    /*useEffect(() => {
-        fetch('https://ms-locations.herokuapp.com/locations')
+    useEffect(() => {
+        fetch('http://172.16.2.102:8080/location/all', {method: "GET"})
         .then((response) => response.json())
-        .then((json) => setMarkers(json))
+        .then((json) => {setMarkers(json)})
         .catch((error) => console.error(error))
-    }, []);*/
+    }, []);
 
     return (
         <View style={styles.container}>
@@ -308,7 +301,7 @@ export default function Map({theme}:any) {
                 }}
                 >
             {markers.map((marker) => (
-                <MapMarker markerData={marker} id={marker.id} theme={theme} simplify={simplifyIcons}/>
+                <MapMarker markerData={marker} id={marker} theme={theme} simplify={simplifyIcons}/>
             ))}
             </MapView>
         </View>
