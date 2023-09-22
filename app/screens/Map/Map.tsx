@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import MapView from 'react-native-maps';
 import { StyleSheet, View } from 'react-native';
 import MapMarker from './MapMarker';
+import MapViewDirections from 'react-native-maps-directions';
 
 export default function Map({theme}:any) {
     const mapDefault:Array<any> = [
@@ -251,7 +252,10 @@ export default function Map({theme}:any) {
     const [region, setRegion] = useState(msCoords)
     const [mapAlreadyChanged, setMapAlreadyChanged] = useState(false);
     const [simplifyIcons, setSimplifyIcons] = useState(true);
-    const [markers, setMarkers] = useState([]);
+    const [userLocation, setUserLocation] = useState();
+    const [markers, setMarkers] = useState([])
+    const GOOGLE_MAPS_APIKEY = '...';
+
 
     useEffect(() => {
         if (theme === 'dark') {
@@ -280,6 +284,7 @@ export default function Map({theme}:any) {
                 provider='google'
                 onUserLocationChange={(event) => {
                     const coordinates:any = event.nativeEvent.coordinate;
+                    setUserLocation(coordinates);
                     if(!mapAlreadyChanged && coordinates.latitude && coordinates.longitude ) {
                         setRegion({
                             latitude: coordinates.latitude,
@@ -303,8 +308,17 @@ export default function Map({theme}:any) {
                 }}
                 >
                 {markers.map((marker, index) => (
-                    <MapMarker markerData={marker} key={index} theme={theme} simplify={simplifyIcons}/>
+                    <MapMarker markerData={marker} key={index} theme={theme} simplify={simplifyIcons} userLocation={userLocation}/>
                 ))}
+                {/*check that only called once, change to renderOnTap*/}
+                <MapViewDirections
+                      origin={userLocation}
+                      destination={{latitude: 51.942209, longitude: 7.623405}}
+                      apikey={GOOGLE_MAPS_APIKEY}
+                      language="de"
+                      strokeWidth={3}
+                      strokeColor="hotpink"
+                    />
             </MapView>
         </View>
         );

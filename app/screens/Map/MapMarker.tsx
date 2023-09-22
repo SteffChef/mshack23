@@ -3,8 +3,8 @@ import { View, StyleSheet } from "react-native";
 import { Marker } from "react-native-maps";
 import { FontAwesome5 } from '@expo/vector-icons';
 import { Feather } from '@expo/vector-icons';
-import { Ionicons } from "@expo/vector-icons";
 import { GetIcon } from "../CategoryIcon";
+import MapViewDirections from 'react-native-maps-directions';
 
 export default function MapMarker({ markerData, id, theme, simplify }:any) {
     const iconSize = 24;
