@@ -301,7 +301,7 @@ export default function Map({theme}:any) {
                 }}
             >
             {markers.map((marker) => (
-                <MapMarker markerData={marker} id={marker.id} />
+                <MapMarker markerData={marker} id={marker.id} theme={theme} />
             ))}
             </MapView>
         </View>

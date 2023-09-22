@@ -1,15 +1,25 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
 import { View, StyleSheet } from "react-native";
 import { Marker } from "react-native-maps";
 import { FontAwesome5 } from '@expo/vector-icons';
 import { Feather } from '@expo/vector-icons';
 
-export default function MapMarker({ markerData, id }:any) {
+export default function MapMarker({ markerData, id, theme }:any) {
 
     const iconSize = 24;
 
+    const [iconColor, setIconColor] = useState('black');
+
+    useEffect(() => {
+        if (theme === 'dark') {
+            setIconColor('white');
+        } else {
+            setIconColor('black');
+        }
+    }, [theme]);
+
     const iconTable: { [key: string]: JSX.Element } = {
-        TShirt: <FontAwesome5 name="tshirt" size={iconSize} color="black" />,
+        TShirt: <FontAwesome5 name="tshirt" size={iconSize} color={iconColor} />,
         // add more icons here
     };
 
@@ -18,13 +28,13 @@ export default function MapMarker({ markerData, id }:any) {
         switch (lenght) {
             case 1:
                 return (
-                    <View style={styles.oneCircle}>
+                    <View style={[styles.oneCircle, {borderColor:iconColor}]}>
                         {iconTable[icons[0]]}
                     </View>
                 );
             case 2:
                 return (
-                    <View style={styles.oneCircle}>
+                    <View style={[styles.oneCircle, {borderColor:iconColor}]}>
                         <View style={styles.row}>
                             {iconTable[icons[0]]}
                             {iconTable[icons[1]]}
@@ -34,7 +44,7 @@ export default function MapMarker({ markerData, id }:any) {
                 );
             case 3:
                 return (
-                    <View style={styles.twoCircle}>
+                    <View style={[styles.twoCircle, {borderColor:iconColor}]}>
                         <View style={styles.row}>
                             {iconTable[icons[0]]}
                             {iconTable[icons[1]]}
@@ -46,7 +56,7 @@ export default function MapMarker({ markerData, id }:any) {
                 );
             default:
                 return (
-                    <View style={styles.twoCircle}>
+                    <View style={[styles.twoCircle, {borderColor:iconColor}]}>
                         <View style={styles.row}
                         >
                             {iconTable[icons[0]]}
@@ -93,7 +103,6 @@ export default function MapMarker({ markerData, id }:any) {
             height: 90,
             borderRadius: 50,
             borderWidth: 3,
-            borderColor: 'black',
             justifyContent: 'center',
             alignItems: 'center',
             alignContent: 'center',
@@ -104,7 +113,6 @@ export default function MapMarker({ markerData, id }:any) {
             height: 70,
             borderRadius: 50,
             borderWidth: 3,
-            borderColor: 'black',
             justifyContent: 'center',
             alignItems: 'center',
         },
