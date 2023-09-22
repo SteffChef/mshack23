@@ -4,7 +4,7 @@ import { Marker } from "react-native-maps";
 import { FontAwesome5 } from '@expo/vector-icons';
 import { Feather } from '@expo/vector-icons';
 
-export default function MapMarker({ markerData, id, theme }:any) {
+export default function MapMarker({ markerData, id, theme, simplify }:any) {
 
     const iconSize = 24;
 
@@ -24,6 +24,11 @@ export default function MapMarker({ markerData, id, theme }:any) {
     };
 
     function iconArrangement(icons: any) {
+        if(simplify) {
+            return (
+                <FontAwesome5 name="map-pin" size={24} color={iconColor} />
+            );
+        }
         const lenght = Object.keys(icons).length;
         switch (lenght) {
             case 1:
@@ -115,5 +120,5 @@ export default function MapMarker({ markerData, id, theme }:any) {
             borderWidth: 3,
             justifyContent: 'center',
             alignItems: 'center',
-        },
+        }
     });

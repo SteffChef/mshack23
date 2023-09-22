@@ -3,7 +3,6 @@ import { useState, useEffect } from 'react';
 import MapView from 'react-native-maps';
 import { StyleSheet, View } from 'react-native';
 import MapMarker from './MapMarker';
-import { FontAwesome5 } from '@expo/vector-icons';
 
 export default function Map({theme}:any) {
     const mapDefault:Array<any> = [
@@ -252,13 +251,14 @@ export default function Map({theme}:any) {
     const [initialRegion, setInitialRegion] = useState(msCoords)
     const [region, setRegion] = useState(msCoords)
     const [mapAlreadyChanged, setMapAlreadyChanged] = useState(false);
+    const [simplifyIcons, setSimplifyIcons] = useState(false);
     const [markers, setMarkers] = useState([{
         id: 1,
         title: 'Test',
         description: 'Test',
         latitude: 51.96236,
         longitude: 7.62571,
-        icons: ["TShirt", "TShirt"]
+        icons: ["TShirt", "TShirt", "TShirt", "TShirt"]
     }]);
 
     useEffect(() => {
@@ -299,14 +299,21 @@ export default function Map({theme}:any) {
                         setMapAlreadyChanged(true);
                     }
                 }}
-            >
+                onRegionChange={(region) => {
+                    if(region.latitudeDelta > 0.01) {
+                        setSimplifyIcons(true);
+                    } else {
+                        setSimplifyIcons(false);
+                    }
+                }}
+                >
             {markers.map((marker) => (
-                <MapMarker markerData={marker} id={marker.id} theme={theme} />
+                <MapMarker markerData={marker} id={marker.id} theme={theme} simplify={simplifyIcons}/>
             ))}
             </MapView>
         </View>
-    );
-}
+        );
+    }
 
 const styles = StyleSheet.create({
   container: {
