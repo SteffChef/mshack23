@@ -28,7 +28,10 @@ const CategoryDrawer = ({ activeCategory, handleCategoryPress }: Props) => {
   const { colors } = useTheme();
 
   return (
-    <ScrollView horizontal={true} style={{ paddingHorizontal: "3.5%" }}>
+    <ScrollView
+      horizontal={true}
+      style={{ paddingHorizontal: "3.5%", height: 50 }}
+    >
       {categories.map((category, index) => (
         <TouchableOpacity
           key={index}
@@ -39,10 +42,13 @@ const CategoryDrawer = ({ activeCategory, handleCategoryPress }: Props) => {
               ...styles.category,
               backgroundColor:
                 activeCategory === category ? colors.primary : colors.card,
+              borderColor: colors.border,
             }}
           >
             <CategoryIcon name={category} isHighlighted={false} />
-            <Text style={{ marginRight: 5 }}>{category}</Text>
+            <Text style={{ marginRight: 5, color: colors.text }}>
+              {category}
+            </Text>
           </View>
         </TouchableOpacity>
       ))}

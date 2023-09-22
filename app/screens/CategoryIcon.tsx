@@ -13,31 +13,32 @@ interface Props {
 }
 
 const GetIcon = (name: string) => {
+  const { colors } = useTheme();
   switch (name) {
     case "Kleidung":
-      return <Ionicons name="shirt" size={15} color="black" />;
+      return <Ionicons name="shirt" size={15} color={colors.text} />;
     case "Haushaltsgegenstände":
       return (
         <MaterialCommunityIcons
           name="washing-machine"
           size={15}
-          color="black"
+          color={colors.text}
         />
       );
     case "Spielzeug & Spiele":
-      return <FontAwesome5 name="dice" size={15} color="black" />;
+      return <FontAwesome5 name="dice" size={15} color={colors.text} />;
     case "Bücher & Medien":
-      return <FontAwesome name="book" size={15} color="black" />;
+      return <FontAwesome name="book" size={15} color={colors.text} />;
     case "Elektronik":
-      return <MaterialIcons name="devices" size={15} color="black" />;
+      return <MaterialIcons name="devices" size={15} color={colors.text} />;
     case "Fahrräder":
-      return <FontAwesome5 name="bicycle" size={15} color="black" />;
+      return <FontAwesome5 name="bicycle" size={15} color={colors.text} />;
     case "Möbel":
       return (
         <MaterialCommunityIcons
           name="table-furniture"
           size={15}
-          color="black"
+          color={colors.text}
         />
       );
   }
@@ -52,6 +53,7 @@ const CategoryIcon = ({ name, isHighlighted }: Props) => {
         borderRadius: 100,
         padding: 3,
         backgroundColor: isHighlighted ? colors.primary : colors.card,
+        borderColor: colors.border,
       }}
     >
       {GetIcon(name)}

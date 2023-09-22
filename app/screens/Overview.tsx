@@ -1,12 +1,15 @@
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text, StyleSheet, ScrollView } from "react-native";
 import React, { useState } from "react";
 import { useTheme } from "@react-navigation/native";
 import SearchBar from "./SearchBar";
 import OverviewCard from "./OverviewCard";
 import CategoryDrawer from "./CategoryDrawer";
+import DetailsModal from "./DetailsModal";
 
 const Overview = () => {
   const { colors } = useTheme();
+
+  const [modalVisible, setModalVisible] = useState(false);
 
   const [searchInput, setSearchInput] = useState("");
   const [activeCategory, setActiveCategory] = useState<string>("Kleidung");
@@ -48,6 +51,56 @@ const Overview = () => {
       distance: 500,
       categories: ["Kleidung", "Haushaltsgegenstände"],
     },
+    {
+      name: "Rathaus",
+      distance: 500,
+      categories: ["Kleidung", "Haushaltsgegenstände"],
+    },
+    {
+      name: "Rathaus",
+      distance: 500,
+      categories: ["Kleidung", "Haushaltsgegenstände"],
+    },
+    {
+      name: "Rathaus",
+      distance: 500,
+      categories: ["Kleidung", "Haushaltsgegenstände"],
+    },
+    {
+      name: "Rathaus",
+      distance: 500,
+      categories: ["Kleidung", "Haushaltsgegenstände"],
+    },
+    {
+      name: "Rathaus",
+      distance: 500,
+      categories: ["Kleidung", "Haushaltsgegenstände"],
+    },
+    {
+      name: "Rathaus",
+      distance: 500,
+      categories: ["Kleidung", "Haushaltsgegenstände"],
+    },
+    {
+      name: "Rathaus",
+      distance: 500,
+      categories: ["Kleidung", "Haushaltsgegenstände"],
+    },
+    {
+      name: "Rathaus",
+      distance: 500,
+      categories: ["Kleidung", "Haushaltsgegenstände"],
+    },
+    {
+      name: "Rathaus",
+      distance: 500,
+      categories: ["Kleidung", "Haushaltsgegenstände"],
+    },
+    {
+      name: "Rathaus",
+      distance: 500,
+      categories: ["Kleidung", "Haushaltsgegenstände"],
+    },
   ];
 
   return (
@@ -57,8 +110,13 @@ const Overview = () => {
         gap: 20,
         marginTop: 20,
         alignItems: "center",
+        paddingBottom: 135,
       }}
     >
+      <DetailsModal
+        modalVisible={modalVisible}
+        setModalVisible={setModalVisible}
+      />
       <View style={{ width: "93%", justifyContent: "center" }}>
         <SearchBar setSearchInput={setSearchInput} searchInput={searchInput} />
       </View>
@@ -67,7 +125,7 @@ const Overview = () => {
         activeCategory={activeCategory}
         handleCategoryPress={handleCategoryPress}
       />
-      <View style={styles.cardContainer}>
+      <ScrollView style={styles.cardContainer}>
         {data
           .filter(
             (item) =>
@@ -80,9 +138,10 @@ const Overview = () => {
               categories={item.categories}
               key={index}
               activeCategory={activeCategory}
+              setModalVisible={setModalVisible}
             />
           ))}
-      </View>
+      </ScrollView>
     </View>
   );
 };
@@ -91,7 +150,6 @@ export default Overview;
 
 const styles = StyleSheet.create({
   cardContainer: {
-    gap: 15,
     width: "93%",
   },
 });

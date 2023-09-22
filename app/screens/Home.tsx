@@ -8,6 +8,7 @@ import { ThemeContext } from "../colorScheme/ThemeContext";
 import { CustomDarkTheme, CustomLightTheme } from "../colorScheme/Theme";
 import ThemeToggle from "./ThemeToggle";
 import { FontAwesome5 } from "@expo/vector-icons";
+import { FontAwesome } from "@expo/vector-icons";
 
 const NavigationComponent = () => {
   const { colors } = useTheme();
@@ -16,6 +17,9 @@ const NavigationComponent = () => {
 
   const HomeIcon = ({ color }: any) => {
     return <FontAwesome5 name="home" size={24} color={color} />;
+  };
+  const BookmarkIcon = ({ color }: any) => {
+    return <FontAwesome name="bookmark" size={24} color={color} />;
   };
 
   return (
@@ -33,9 +37,9 @@ const NavigationComponent = () => {
         options={{ headerRight: ThemeToggle }}
       />
       <HomeLayout.Screen
-        name="Page3"
+        name="Lesezeichen"
         component={Page3}
-        options={{ headerRight: ThemeToggle }}
+        options={{ headerRight: ThemeToggle, tabBarIcon: BookmarkIcon }}
       />
     </HomeLayout.Navigator>
   );
