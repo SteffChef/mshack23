@@ -3,7 +3,7 @@ import { NavigationContainer, useTheme } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import Page1 from "./Page1";
 import Page2 from "./Page2";
-import Page3 from "./Page3";
+import Map from "./Map";
 import { ThemeContext } from "../colorScheme/ThemeContext";
 import { CustomDarkTheme, CustomLightTheme } from "../colorScheme/Theme";
 import ThemeToggle from "./ThemeToggle";
@@ -28,14 +28,21 @@ const NavigationComponent = () => {
         options={{ headerRight: ThemeToggle }}
       />
       <HomeLayout.Screen
-        name="Page3"
-        component={Page3}
+        name="Map"
+        component={MapCall}
         options={{ headerRight: ThemeToggle }}
       />
     </HomeLayout.Navigator>
   );
 };
 
+const MapCall = () => {
+  const themeContext = useContext(ThemeContext);
+
+  return (
+    <Map theme={themeContext.themeState}/>
+  )
+}
 const Home = () => {
   const themeContext = useContext(ThemeContext);
 

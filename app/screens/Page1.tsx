@@ -7,7 +7,7 @@ const Page1 = () => {
 
   return (
     <View>
-      <Text style={{ color: colors.text }}>Page1</Text>
+      <Text style={{ color: colors.text }}>Page1011</Text>
     </View>
   );
 };
