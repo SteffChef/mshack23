@@ -2,6 +2,8 @@ import React from 'react';
 import { useState, useEffect } from 'react';
 import MapView from 'react-native-maps';
 import { StyleSheet, View } from 'react-native';
+import MapMarker from './MapMarker';
+import { FontAwesome5 } from '@expo/vector-icons';
 
 export default function Map({theme}:any) {
     const mapDefault:Array<any> = [
@@ -250,6 +252,14 @@ export default function Map({theme}:any) {
     const [initialRegion, setInitialRegion] = useState(msCoords)
     const [region, setRegion] = useState(msCoords)
     const [mapAlreadyChanged, setMapAlreadyChanged] = useState(false);
+    const [markers, setMarkers] = useState([{
+        id: 1,
+        title: 'Test',
+        description: 'Test',
+        latitude: 51.96236,
+        longitude: 7.62571,
+        icons: ["TShirt", "TShirt","TShirt"]
+    }]);
 
     useEffect(() => {
         if (theme === 'dark') {
@@ -258,6 +268,13 @@ export default function Map({theme}:any) {
             setMapTheme(mapDefault);
         }
     }, [theme]);
+
+    /*useEffect(() => {
+        fetch('https://ms-locations.herokuapp.com/locations')
+        .then((response) => response.json())
+        .then((json) => setMarkers(json))
+        .catch((error) => console.error(error))
+    }, []);*/
 
     return (
         <View style={styles.container}>
@@ -282,7 +299,11 @@ export default function Map({theme}:any) {
                         setMapAlreadyChanged(true);
                     }
                 }}
-            />
+            >
+            {markers.map((marker) => (
+                <MapMarker markerData={marker} id={marker.id} />
+            ))}
+            </MapView>
         </View>
     );
 }

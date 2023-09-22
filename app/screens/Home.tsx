@@ -3,7 +3,7 @@ import { NavigationContainer, useTheme } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import Page1 from "./Page1";
 import Page2 from "./Page2";
-import Map from "./Map";
+import Map from "./Map/Map";
 import { ThemeContext } from "../colorScheme/ThemeContext";
 import { CustomDarkTheme, CustomLightTheme } from "../colorScheme/Theme";
 import ThemeToggle from "./ThemeToggle";
