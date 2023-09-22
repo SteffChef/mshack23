@@ -12,7 +12,7 @@ interface Props {
   isHighlighted: boolean;
 }
 
-const GetIcon = (name: string) => {
+export const GetIcon = (name: string) => {
   const { colors } = useTheme();
   switch (name) {
     case "clothing":

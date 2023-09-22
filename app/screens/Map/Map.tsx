@@ -248,7 +248,6 @@ export default function Map({theme}:any) {
     }
     
     const [mapTheme, setMapTheme] = useState(mapDefault);
-    const [initialRegion, setInitialRegion] = useState(msCoords)
     const [region, setRegion] = useState(msCoords)
     const [mapAlreadyChanged, setMapAlreadyChanged] = useState(false);
     const [simplifyIcons, setSimplifyIcons] = useState(false);
@@ -265,7 +264,7 @@ export default function Map({theme}:any) {
     useEffect(() => {
         fetch('http://172.16.2.102:8080/location/all', {method: "GET"})
         .then((response) => response.json())
-        .then((json) => {setMarkers(json)})
+        .then((json) => {setMarkers(json), console.log("called")})
         .catch((error) => console.error(error))
     }, []);
 
@@ -274,7 +273,6 @@ export default function Map({theme}:any) {
             <MapView   
                 style={styles.map}
                 customMapStyle={mapTheme}
-                initialRegion={initialRegion}
                 loadingEnabled={true}
                 showsUserLocation={true}
                 showsMyLocationButton={true}
@@ -282,7 +280,7 @@ export default function Map({theme}:any) {
                 provider='google'
                 onUserLocationChange={(event) => {
                     const coordinates:any = event.nativeEvent.coordinate;
-                    if(!mapAlreadyChanged) {
+                    if(!mapAlreadyChanged && coordinates.latitude && coordinates.longitude ) {
                         setRegion({
                             latitude: coordinates.latitude,
                             longitude: coordinates.longitude,
@@ -290,6 +288,10 @@ export default function Map({theme}:any) {
                             longitudeDelta: 0.05,
                         });
                         setMapAlreadyChanged(true);
+                    }
+                    else if(!coordinates.latitude && !coordinates.longitude) {
+                        setMapAlreadyChanged(true);
+                        setRegion(msCoords);
                     }
                 }}
                 onRegionChange={(region) => {
@@ -300,9 +302,9 @@ export default function Map({theme}:any) {
                     }
                 }}
                 >
-            {markers.map((marker) => (
-                <MapMarker markerData={marker} id={marker} theme={theme} simplify={simplifyIcons}/>
-            ))}
+                {markers.map((marker, index) => (
+                    <MapMarker markerData={marker} key={index} theme={theme} simplify={simplifyIcons}/>
+                ))}
             </MapView>
         </View>
         );
