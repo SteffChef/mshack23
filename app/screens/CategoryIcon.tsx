@@ -15,9 +15,9 @@ interface Props {
 const GetIcon = (name: string) => {
   const { colors } = useTheme();
   switch (name) {
-    case "Kleidung":
+    case "clothing":
       return <Ionicons name="shirt" size={15} color={colors.text} />;
-    case "Haushaltsgegenstände":
+    case "household":
       return (
         <MaterialCommunityIcons
           name="washing-machine"
@@ -25,15 +25,15 @@ const GetIcon = (name: string) => {
           color={colors.text}
         />
       );
-    case "Spielzeug & Spiele":
+    case "toys":
       return <FontAwesome5 name="dice" size={15} color={colors.text} />;
-    case "Bücher & Medien":
+    case "media":
       return <FontAwesome name="book" size={15} color={colors.text} />;
-    case "Elektronik":
+    case "electronics":
       return <MaterialIcons name="devices" size={15} color={colors.text} />;
-    case "Fahrräder":
+    case "bicycles":
       return <FontAwesome5 name="bicycle" size={15} color={colors.text} />;
-    case "Möbel":
+    case "furniture":
       return (
         <MaterialCommunityIcons
           name="table-furniture"

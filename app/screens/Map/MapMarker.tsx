@@ -26,7 +26,7 @@ export default function MapMarker({ markerData, id, theme, simplify }:any) {
     };
 
     function iconArrangement(categories: any) {
-        if(simplify) {
+        if(simplify || categories.length === 0) {
             return (
                 <FontAwesome5 name="map-pin" size={24} color={iconColor} />
             );
