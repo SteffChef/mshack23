@@ -250,7 +250,7 @@ export default function Map({theme}:any) {
     const [mapTheme, setMapTheme] = useState(mapDefault);
     const [region, setRegion] = useState(msCoords)
     const [mapAlreadyChanged, setMapAlreadyChanged] = useState(false);
-    const [simplifyIcons, setSimplifyIcons] = useState(false);
+    const [simplifyIcons, setSimplifyIcons] = useState(true);
     const [markers, setMarkers] = useState([]);
 
     useEffect(() => {
@@ -264,7 +264,7 @@ export default function Map({theme}:any) {
     useEffect(() => {
         fetch('http://172.16.2.102:8080/location/all', {method: "GET"})
         .then((response) => response.json())
-        .then((json) => {setMarkers(json), console.log("called")})
+        .then((json) => {setMarkers(json)})
         .catch((error) => console.error(error))
     }, []);
 
@@ -295,7 +295,7 @@ export default function Map({theme}:any) {
                     }
                 }}
                 onRegionChange={(region) => {
-                    if(region.latitudeDelta > 0.05) {
+                    if(region.latitudeDelta > 0.03) {
                         setSimplifyIcons(true);
                     } else {
                         setSimplifyIcons(false);

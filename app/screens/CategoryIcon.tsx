@@ -12,33 +12,33 @@ interface Props {
   isHighlighted: boolean;
 }
 
-export const GetIcon = (name: string) => {
+export const GetIcon = (name: string, size:number, color:string) => {
   const { colors } = useTheme();
   switch (name) {
     case "clothing":
-      return <Ionicons name="shirt" size={15} color={colors.text} />;
+      return <Ionicons name="shirt" size={size} color={color} />;
     case "household":
       return (
         <MaterialCommunityIcons
           name="washing-machine"
-          size={15}
-          color={colors.text}
+          size={size}
+          color={color}
         />
       );
     case "toys":
-      return <FontAwesome5 name="dice" size={15} color={colors.text} />;
+      return <FontAwesome5 name="dice" size={size} color={color} />;
     case "media":
-      return <FontAwesome name="book" size={15} color={colors.text} />;
+      return <FontAwesome name="book" size={size} color={color} />;
     case "electronics":
-      return <MaterialIcons name="devices" size={15} color={colors.text} />;
+      return <MaterialIcons name="devices" size={size} color={color} />;
     case "bicycles":
-      return <FontAwesome5 name="bicycle" size={15} color={colors.text} />;
+      return <FontAwesome5 name="bicycle" size={size} color={color} />;
     case "furniture":
       return (
         <MaterialCommunityIcons
           name="table-furniture"
-          size={15}
-          color={colors.text}
+          size={size}
+          color={color}
         />
       );
   }
@@ -56,7 +56,7 @@ const CategoryIcon = ({ name, isHighlighted }: Props) => {
         borderColor: colors.border,
       }}
     >
-      {GetIcon(name)}
+      {GetIcon(name, 15, colors.text)}
     </View>
   );
 };

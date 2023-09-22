@@ -4,43 +4,9 @@ import { Marker } from "react-native-maps";
 import { FontAwesome5 } from '@expo/vector-icons';
 import { Feather } from '@expo/vector-icons';
 import { Ionicons } from "@expo/vector-icons";
-import { FontAwesome } from "@expo/vector-icons";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
-import { MaterialIcons } from "@expo/vector-icons";
+import { GetIcon } from "../CategoryIcon";
 
 export default function MapMarker({ markerData, id, theme, simplify }:any) {
-
-    const GetIcon = (name: string) => {
-        switch (name) {
-          case "clothing":
-            return <Ionicons name="shirt" size={iconSize} color={iconColor} />;
-          case "household":
-            return (
-              <MaterialCommunityIcons
-                name="washing-machine"
-                size={iconSize}
-                color={iconColor}
-              />
-            );
-          case "toys":
-            return <FontAwesome5 name="dice" size={iconSize} color={iconColor} />;
-          case "media":
-            return <FontAwesome name="book" size={iconSize} color={iconColor} />;
-          case "electronics":
-            return <MaterialIcons name="devices" size={iconSize} color={iconColor} />;
-          case "bicycles":
-            return <FontAwesome5 name="bicycle" size={iconSize} color={iconColor} />;
-          case "furniture":
-            return (
-              <MaterialCommunityIcons
-                name="table-furniture"
-                size={iconSize}
-                color={iconColor}
-              />
-            );
-        }
-      };
-
     const iconSize = 24;
 
     const [iconColor, setIconColor] = useState('black');
@@ -64,15 +30,15 @@ export default function MapMarker({ markerData, id, theme, simplify }:any) {
             case 1:
                 return (
                     <View style={[styles.oneCircle, {borderColor:iconColor}]}>
-                        {GetIcon(categories[0].name)}
+                        {GetIcon(categories[0].name, iconSize, iconColor)}
                     </View>
                 );
             case 2:
                 return (
                     <View style={[styles.oneCircle, {borderColor:iconColor}]}>
                         <View style={styles.row}>
-                            {GetIcon(categories[0].name)}
-                            {GetIcon(categories[1].name)}
+                            {GetIcon(categories[0].name, iconSize, iconColor)}
+                            {GetIcon(categories[1].name, iconSize, iconColor)}
                         </View>
                     </View>
 
@@ -81,11 +47,11 @@ export default function MapMarker({ markerData, id, theme, simplify }:any) {
                 return (
                     <View style={[styles.twoCircle, {borderColor:iconColor}]}>
                         <View style={styles.row}>
-                            {GetIcon(categories[0].name)}
-                            {GetIcon(categories[1].name)}
+                            {GetIcon(categories[0].name, iconSize, iconColor)}
+                            {GetIcon(categories[1].name, iconSize, iconColor)}
                         </View>
                         <View style={styles.row}>
-                            {GetIcon(categories[2].name)}
+                            {GetIcon(categories[2].name, iconSize, iconColor)}
                         </View>
                     </View>
                 );
@@ -94,13 +60,13 @@ export default function MapMarker({ markerData, id, theme, simplify }:any) {
                     <View style={[styles.twoCircle, {borderColor:iconColor}]}>
                         <View style={styles.row}
                         >
-                            {GetIcon(categories[0].name)}
-                            {GetIcon(categories[1].name)}
+                            {GetIcon(categories[0].name, iconSize, iconColor)}
+                            {GetIcon(categories[1].name, iconSize, iconColor)}
                         </View>
                         <View style={styles.row}
                         >
-                            {GetIcon(categories[2].name)}
-                            <Feather name="more-horizontal" size={iconSize} color="black" />
+                            {GetIcon(categories[2].name, iconSize, iconColor)}
+                            <Feather name="more-horizontal" size={iconSize} color={iconColor} />
                         </View>
                     </View>
                 );
