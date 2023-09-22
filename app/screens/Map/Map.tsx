@@ -258,7 +258,7 @@ export default function Map({theme}:any) {
         description: 'Test',
         latitude: 51.96236,
         longitude: 7.62571,
-        icons: ["TShirt", "TShirt","TShirt"]
+        icons: ["TShirt", "TShirt"]
     }]);
 
     useEffect(() => {
