@@ -1,24 +1,34 @@
-import { View, Text, StyleSheet, ScrollView } from "react-native";
+import { View, Text, StyleSheet, ScrollView, FlatList } from "react-native";
 import React, { useState } from "react";
-import { useTheme } from "@react-navigation/native";
 import SearchBar from "./SearchBar";
 import OverviewCard from "./OverviewCard";
 import CategoryDrawer from "./CategoryDrawer";
 import DetailsModal from "./DetailsModal";
+import LocationTypeDrawer from "./LocationTypeDrawer";
 
-const Overview = () => {
-  const { colors } = useTheme();
+interface Props {
+  data: any;
+  bookmarkReference: any;
+}
 
+const Overview = ({ data, bookmarkReference }: Props) => {
   const [modalVisible, setModalVisible] = useState(false);
 
-  const [searchInput, setSearchInput] = useState("");
-  const [activeCategory, setActiveCategory] = useState<string>("Kleidung");
+  const [activeCategory, setActiveCategory] = useState<string>("");
+  const [activeLocation, setActiveLocation] = useState<string>("");
 
   const handleCategoryPress = (text: string) => {
     if (text === activeCategory) {
       setActiveCategory("");
     } else {
       setActiveCategory(text);
+    }
+  };
+  const handleLocationPress = (text: string) => {
+    if (text === activeLocation) {
+      setActiveLocation("");
+    } else {
+      setActiveLocation(text);
     }
   };
 
@@ -29,61 +39,6 @@ const Overview = () => {
     comments?: string;
     openingHours?: string;
   }
-
-  const data: datatype[] = [
-    {
-      name: "Station",
-      distance: 500,
-      categories: [
-        "clothing",
-        "household",
-        "toys",
-        "media",
-        "electronics",
-        "bicycles",
-        "furniture",
-      ],
-    },
-    {
-      name: "Station",
-      distance: 500,
-      categories: [
-        "clothing",
-        "household",
-        "toys",
-        "media",
-        "electronics",
-        "bicycles",
-        "furniture",
-      ],
-    },
-    {
-      name: "Station",
-      distance: 500,
-      categories: [
-        "clothing",
-        "household",
-        "toys",
-        "media",
-        "electronics",
-        "bicycles",
-        "furniture",
-      ],
-    },
-    {
-      name: "Station",
-      distance: 500,
-      categories: [
-        "clothing",
-        "household",
-        "toys",
-        "media",
-        "electronics",
-        "bicycles",
-        "furniture",
-      ],
-    },
-  ];
 
   return (
     <View
@@ -100,31 +55,44 @@ const Overview = () => {
         setModalVisible={setModalVisible}
         data={data}
       />
-      <View style={{ width: "93%", justifyContent: "center" }}>
-        <SearchBar setSearchInput={setSearchInput} searchInput={searchInput} />
-      </View>
 
       <CategoryDrawer
         activeCategory={activeCategory}
         handleCategoryPress={handleCategoryPress}
       />
-      <ScrollView style={styles.cardContainer}>
-        {data
-          .filter(
-            (item) =>
-              item.categories.includes(activeCategory) || activeCategory === ""
+      <LocationTypeDrawer
+        activeLocationType={activeLocation}
+        handleLocationPress={handleLocationPress}
+      />
+      <FlatList
+        style={{ width: "93%" }}
+        onEndReachedThreshold={5}
+        data={data
+          .filter((item: any) =>
+            item.categories.some(
+              (category: any) =>
+                category.name === activeCategory || activeCategory === ""
+            )
           )
-          .map((item: datatype, index) => (
-            <OverviewCard
-              name={item.name}
-              distance={item.distance}
-              categories={item.categories}
-              key={index}
-              activeCategory={activeCategory}
-              setModalVisible={setModalVisible}
-            />
-          ))}
-      </ScrollView>
+          .filter(
+            (item: any) =>
+              item.locationType === activeLocation || activeLocation === ""
+          )}
+        renderItem={({ item }) => (
+          <OverviewCard
+            name={item.name}
+            distance={item.distance}
+            id={item.id}
+            categories={item.categories.map((item: any) => item.name)}
+            key={item.id}
+            activeCategory={activeCategory}
+            setModalVisible={setModalVisible}
+            bookmarkReference={bookmarkReference}
+          />
+        )}
+        keyExtractor={(item) => item.id.toString()}
+        windowSize={20}
+      />
     </View>
   );
 };
