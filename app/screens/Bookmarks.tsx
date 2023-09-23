@@ -45,7 +45,7 @@ const Bookmarks = ({ data, bookmarkReference }: Props) => {
               setModalVisible={setModalVisible}
               id={item.id}
               bookmarkReference={bookmarkReference}
-              setActiveItem={() => {}}
+              setActiveItem={setActiveItem}
             />
           ))}
       </ScrollView>
