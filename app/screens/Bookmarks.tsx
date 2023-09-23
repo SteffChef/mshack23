@@ -46,6 +46,7 @@ const Bookmarks = ({ data, bookmarkReference }: Props) => {
               id={item.id}
               bookmarkReference={bookmarkReference}
               setActiveItem={setActiveItem}
+              locationType={item.locationType}
             />
           ))}
       </ScrollView>

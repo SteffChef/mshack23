@@ -5,6 +5,7 @@ import OverviewCard from "./OverviewCard";
 import CategoryDrawer from "./CategoryDrawer";
 import DetailsModal from "./DetailsModal";
 import LocationTypeDrawer from "./LocationTypeDrawer";
+import { Octicons } from "@expo/vector-icons";
 
 interface Props {
   data: any;
@@ -65,6 +66,31 @@ const Overview = ({ data, bookmarkReference }: Props) => {
         activeLocationType={activeLocation}
         handleLocationPress={handleLocationPress}
       />
+      {/* <View
+        style={{
+          backgroundColor: "red",
+          height: 100,
+          width: 100,
+          transform: [{ rotate: "45deg" }],
+          borderTopLeftRadius: 100,
+          borderTopRightRadius: 100,
+          borderBottomLeftRadius: 100,
+          borderBottomRightRadius: 10,
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        <Octicons
+          style={{
+            transform: [{ rotate: "-45deg" }],
+            marginTop: 5,
+            marginLeft: 5,
+          }}
+          name="heart"
+          size={60}
+          color="white"
+        />
+      </View> */}
       <FlatList
         style={{ width: "93%" }}
         onEndReachedThreshold={5}
@@ -90,6 +116,7 @@ const Overview = ({ data, bookmarkReference }: Props) => {
             setModalVisible={setModalVisible}
             setActiveItem={setActiveItem}
             bookmarkReference={bookmarkReference}
+            locationType={item.locationType}
           />
         )}
         keyExtractor={(item) => item.id.toString()}

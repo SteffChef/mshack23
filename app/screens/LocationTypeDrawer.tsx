@@ -9,7 +9,23 @@ import React from "react";
 import CategoryIcon from "./CategoryIcon";
 import { useTheme } from "@react-navigation/native";
 
-const categories = ["donate", "repair", "dispose"];
+const categories = [
+  {
+    name: "donate",
+    code: "#19CD91",
+    showName: "Spenden",
+  },
+  {
+    name: "repair",
+    code: "#82A0D8",
+    showName: "Reparatur",
+  },
+  {
+    name: "dispose",
+    code: "#ECEE81",
+    showName: "Recyclen",
+  },
+];
 
 interface Props {
   activeLocationType: string;
@@ -30,22 +46,18 @@ const LocationTypeDrawer = ({
         height: 50,
       }}
     >
-      {categories.map((category, index) => (
-        <TouchableOpacity
-          key={index}
-          onPress={() => handleLocationPress(category)}
-        >
+      {categories.map(({ name, code, showName }, index) => (
+        <TouchableOpacity key={index} onPress={() => handleLocationPress(name)}>
           <View
             style={{
               ...styles.category,
-              backgroundColor:
-                activeLocationType === category ? colors.primary : colors.card,
-              borderColor: colors.border,
+              backgroundColor: activeLocationType === name ? code : colors.card,
+              borderColor: code,
             }}
           >
-            <CategoryIcon name={category} isHighlighted={false} />
+            <CategoryIcon name={name} isHighlighted={false} />
             <Text style={{ marginRight: 5, color: colors.text }}>
-              {category}
+              {showName}
             </Text>
           </View>
         </TouchableOpacity>

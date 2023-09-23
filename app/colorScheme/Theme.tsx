@@ -18,13 +18,13 @@ export const CustomLightTheme = {
   ...DefaultTheme,
   colors: {
     ...DefaultTheme.colors,
-    primary: "#b63c17",
+    primary: "#19CD91",
   },
 };
 export const CustomDarkTheme = {
   ...DarkTheme,
   colors: {
     ...DarkTheme.colors,
-    primary: "#b63c17",
+    primary: "#19CD91",
   },
 };
