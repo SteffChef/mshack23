@@ -4,13 +4,11 @@ import { Marker } from "react-native-maps";
 import { FontAwesome5 } from '@expo/vector-icons';
 import { Feather } from '@expo/vector-icons';
 import { GetIcon } from "../CategoryIcon";
-import { Button, Card, Text } from 'react-native-paper';
 
-export default function MapMarker({ markerData, id, theme, simplify, setDestination }:any) {
+export default function MapMarker({ markerData, id, theme, simplify, setDestination, setBottomSheet, setBottomSheetIsOpen }:any) {
     const iconSize = 24;
 
     const [iconColor, setIconColor] = useState('black');
-    const [bottomSheetOpen, setBottomSheetOpen] = useState(false);
 
     useEffect(() => {
         if (theme === 'dark') {
@@ -84,24 +82,10 @@ export default function MapMarker({ markerData, id, theme, simplify, setDestinat
                     longitude: markerData.longitude,
                 }}
                 title={markerData.name}
-                onPress={() => {setDestination({latitude: markerData.latitude, longitude: markerData.longitude}); setBottomSheetOpen(true);}}
-                onDeselect={() => {setDestination(null), setBottomSheetOpen(false);}}
+                onPress={() => {setDestination({latitude: markerData.latitude, longitude: markerData.longitude}); setBottomSheet(markerData), setBottomSheetIsOpen(true);}}
             >
                 {iconArrangement(markerData.categories)}
             </Marker>
-            {bottomSheetOpen &&
-            <Card>
-                <Card.Title title={markerData.name} subtitle="Card Subtitle" />
-                <Card.Content>
-                    <Text variant="titleLarge">Card title</Text>
-                <   Text variant="bodyMedium">Card content</Text>
-                </Card.Content>
-                <Card.Actions>
-                    <Button>Cancel</Button>
-                    <Button>Ok</Button>
-                </Card.Actions>
-            </Card>
-            }
         </>
         );
         }
