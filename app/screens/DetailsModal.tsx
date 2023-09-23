@@ -1,10 +1,10 @@
-import { View, Text, Button, Modal, TouchableOpacity } from "react-native";
-import React, { useState } from "react";
-import { StyleSheet, Image, ScrollView, ImageBackground } from "react-native";
-import { NavigationContainer, useTheme } from "@react-navigation/native";
+import { View, Text, Modal, TouchableOpacity } from "react-native";
+import React from "react";
+import { StyleSheet } from "react-native";
 import { FontAwesome } from "@expo/vector-icons";
-import CategoryDrawer from "./CategoryDrawer";
+import CategoryDisplay from "./CategoryDisplay";
 import { useNavigation } from "@react-navigation/native";
+import { useTheme } from "@react-navigation/native";
 
 interface Props {
   modalVisible: boolean;
@@ -15,8 +15,9 @@ interface Props {
 const DetailsModal = ({ modalVisible, setModalVisible, item }: Props) => {
   const { colors } = useTheme();
   const navigation = useNavigation();
-  if(item === undefined){
-    return;
+
+  if (item === undefined) {
+    return null; // You might want to handle this differently
   }
 
   return (
@@ -24,58 +25,62 @@ const DetailsModal = ({ modalVisible, setModalVisible, item }: Props) => {
       animationType="slide"
       visible={modalVisible}
       presentationStyle="pageSheet"
-      style={{ height: 20, backgroundColor: colors.background }}
+      style={{ backgroundColor: "transparent" }}
     >
-      <Text>{item.length}</Text>
-      <View style={{ flex: 1, margin: 8, backgroundColor: colors.background }}>
-        <View style={styles.closeButtonContainer}>
-          <FontAwesome
-            name="times"
-            size={30}
-            color={colors.text}
-            onPress={() => setModalVisible(false)}
-            style={{ color: colors.text, ...styles.closeButton }}
-          />
-        </View>
+      <View style={{ ...styles.container, backgroundColor: colors.background }}>
         <View style={styles.headerContainer}>
-          <View style={styles.innerContainer}>
-            <Text style={{ color: colors.text, ...styles.title }}>
+          <View style={styles.titleContainer}>
+            <Text style={{ ...styles.title, color: colors.text }}>
               {item.name}
+            </Text>
+            <FontAwesome
+              name="times"
+              size={30}
+              onPress={() => setModalVisible(false)}
+              style={styles.closeButton}
+              color={colors.primary}
+            />
+          </View>
+          <CategoryDisplay
+            handleCategoryPress={() => {}}
+            categories={item.categories.map((entry) => entry.name)}
+          />
+          <Text
+            style={{
+              ...styles.description,
+              backgroundColor: colors.card,
+              borderColor: colors.border,
+            }}
+          >
+            {item.comments
+              ? item.comments
+              : "Das ist eine Beispielbeschreibung"}
+          </Text>
+          <View
+            style={{
+              ...styles.openingHoursContainer,
+              borderColor: colors.border,
+              backgroundColor: colors.card,
+            }}
+          >
+            <Text style={{ ...styles.openingHoursTitle, color: colors.text }}>
+              Öffnungszeiten:
+            </Text>
+            <Text style={{ ...styles.openingHours, color: colors.text }}>
+              {item.openingHours}
             </Text>
           </View>
         </View>
-        <View
-          style={{
-            height: 55,
-            borderRadius: 5,
-            paddingVertical: 5,
-            marginTop: 10,
+        <TouchableOpacity
+          style={styles.mapIcon}
+          onPress={() => {
+            navigation.navigate("Karte");
+            setModalVisible(false);
           }}
         >
-          <CategoryDrawer activeCategory={""} handleCategoryPress={() => {}} />
-        </View>
-        <View style={styles.descriptionContainer}>
-          <Text style={{ color: colors.text, ...styles.description }}>
-            {item.comments}
-          </Text>
-        </View>
-        <View
-          style={{
-            flexDirection: "row",
-            justifyContent: "space-between",
-            alignItems: "center",
-          }}
-        >
-          <Text style={{ color: colors.text, fontSize: 18 }}>
-            {item.openingHours}
-          </Text>
-        </View>
+          <FontAwesome name="map-marker" size={38} color={colors.text} />
+        </TouchableOpacity>
       </View>
-        <View style={styles.mapIcon}>
-            <TouchableOpacity onPress={() => {navigation.navigate("Karte"); setModalVisible(false)}}>
-              <FontAwesome name="map-marker" size={38} color="black" />
-            </TouchableOpacity>
-        </View>
     </Modal>
   );
 };
@@ -83,31 +88,48 @@ const DetailsModal = ({ modalVisible, setModalVisible, item }: Props) => {
 export default DetailsModal;
 
 const styles = StyleSheet.create({
-  descriptionContainer: {
-    marginTop: 10,
-    paddingLeft: 9,
-    paddingBottom: 8,
-    borderRadius: 10,
-    borderWidth: 1.1,
+  container: {
+    flex: 1,
+    backgroundColor: "white",
+    padding: 16,
   },
-  innerContainer: {
+  titleContainer: {
     flexDirection: "row",
     justifyContent: "space-between",
+    alignItems: "center",
   },
   headerContainer: {
-    height: 80,
-    justifyContent: "flex-end",
+    flex: 1,
+    marginVertical: 20,
   },
   title: {
     fontSize: 28,
     fontWeight: "bold",
+    marginBottom: 10,
   },
   description: {
-    marginTop: 8,
     fontSize: 20,
+    marginBottom: 10,
+    borderWidth: 1,
+    borderRadius: 20,
+    padding: 10,
   },
+  openingHoursContainer: {
+    marginBottom: 10,
+    borderWidth: 1,
+    borderRadius: 20,
+    padding: 10,
+  },
+  openingHours: {
+    fontSize: 18,
+  },
+  openingHoursTitle: {
+    fontWeight: "700",
+  },
+  closeButton: {},
   mapIcon: {
-    margin: 16, // Adjust the margin as needed
+    alignSelf: "center",
+    marginTop: 16,
     borderRadius: 30,
     borderWidth: 2,
     borderColor: "black",
@@ -115,15 +137,5 @@ const styles = StyleSheet.create({
     height: 60,
     justifyContent: "center",
     alignItems: "center",
-  },
-  closeButtonContainer: {
-    position: "absolute",
-    top: 10,
-    right: 10,
-    zIndex: 1,
-  },
-  closeButton: {
-    borderRadius: 15,
-    padding: 5,
   },
 });
