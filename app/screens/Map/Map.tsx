@@ -4,6 +4,7 @@ import MapView from 'react-native-maps';
 import { StyleSheet, View } from 'react-native';
 import MapMarker from './MapMarker';
 import MapViewDirections from 'react-native-maps-directions';
+import Config from 'react-native-config';
 
 export default function Map({theme}:any) {
     const mapDefault:Array<any> = [
@@ -254,7 +255,8 @@ export default function Map({theme}:any) {
     const [simplifyIcons, setSimplifyIcons] = useState(true);
     const [userLocation, setUserLocation] = useState();
     const [markers, setMarkers] = useState([])
-    const GOOGLE_MAPS_APIKEY = '...';
+    const [destination, setDestination] = useState(null);
+    const GOOGLE_MAPS_APIKEY = Config.GOOGLE_MAPS_APIKEY;
 
 
     useEffect(() => {
@@ -308,17 +310,18 @@ export default function Map({theme}:any) {
                 }}
                 >
                 {markers.map((marker, index) => (
-                    <MapMarker markerData={marker} key={index} theme={theme} simplify={simplifyIcons} userLocation={userLocation}/>
+                    <MapMarker markerData={marker} key={index} theme={theme} simplify={simplifyIcons} setDestination={setDestination}/>
                 ))}
                 {/*check that only called once, change to renderOnTap*/}
+                {(GOOGLE_MAPS_APIKEY && destination) &&
                 <MapViewDirections
                       origin={userLocation}
-                      destination={{latitude: 51.942209, longitude: 7.623405}}
+                      destination={destination}
                       apikey={GOOGLE_MAPS_APIKEY}
                       language="de"
                       strokeWidth={3}
                       strokeColor="hotpink"
-                    />
+                    />}
             </MapView>
         </View>
         );
