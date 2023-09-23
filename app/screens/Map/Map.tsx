@@ -259,7 +259,7 @@ export default function Map({theme}:any) {
     const [destination, setDestination] = useState(null);
     const [bottomSheet, setBottomSheet] = useState<MarkerDataInterface>({id:0, locationType:'', name:'', address:'', latitude:0, longitude:0, openingHours:'', infoLink:'', categories:[]});
     const [bottomSheetIsOpen, setBottomSheetIsOpen] = useState(false);
-    const [mapSize, setMapSize] = useState<MapSize>(styles.mapFull);
+    const [mapSize, setMapSize] = useState<any>("100%");
     const GOOGLE_MAPS_APIKEY = Config.GOOGLE_MAPS_APIKEY;
 
     interface MarkerDataInterface {
