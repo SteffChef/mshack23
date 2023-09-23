@@ -12,7 +12,7 @@ interface Props {
 const Bookmarks = ({ data, bookmarkReference }: Props) => {
   const [modalVisible, setModalVisible] = useState(false);
 
-  const [activeCategory, setActiveCategory] = useState<string>("");
+  const [activeItem, setActiveItem] = useState<number>(1);
 
   return (
     <View
@@ -27,6 +27,7 @@ const Bookmarks = ({ data, bookmarkReference }: Props) => {
       <DetailsModal
         modalVisible={modalVisible}
         setModalVisible={setModalVisible}
+        item={data.filter((item: any) => item.id === activeItem)[0]}
       />
 
       <ScrollView style={styles.cardContainer}>
@@ -40,10 +41,11 @@ const Bookmarks = ({ data, bookmarkReference }: Props) => {
               distance={item.distance}
               categories={item.categories.map((category: any) => category.name)}
               key={index}
-              activeCategory={activeCategory}
+              activeCategory={""}
               setModalVisible={setModalVisible}
               id={item.id}
               bookmarkReference={bookmarkReference}
+              setActiveItem={() => {}}
             />
           ))}
       </ScrollView>

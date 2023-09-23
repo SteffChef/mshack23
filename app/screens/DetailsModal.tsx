@@ -13,9 +13,13 @@ interface Props {
   setModalVisible: (x: boolean) => void;
 }
 
+type Nav = {
+  navigate: (value: string) => void;
+};
+
 const DetailsModal = ({ modalVisible, setModalVisible, item }: Props) => {
   const { colors } = useTheme();
-  const navigation = useNavigation();
+  const navigation = useNavigation<Nav>();
 
   if (item === undefined) {
     return null; // You might want to handle this differently
@@ -44,7 +48,7 @@ const DetailsModal = ({ modalVisible, setModalVisible, item }: Props) => {
           </View>
           <CategoryDisplay
             handleCategoryPress={() => {}}
-            categories={item.categories.map((entry) => entry.name)}
+            categories={item.categories.map((entry: any) => entry.name)}
           />
           <Text
             style={{

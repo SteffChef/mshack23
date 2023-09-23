@@ -10,18 +10,9 @@ import React from "react";
 import CategoryIcon from "./CategoryIcon";
 import { useTheme } from "@react-navigation/native";
 
-const categories = [
-  "clothing",
-  "household",
-  "toys",
-  "media",
-  "electronics",
-  "bicycles",
-  "furniture",
-];
-
 interface Props {
   handleCategoryPress: (text: string) => void;
+  categories: string[];
 }
 
 const CategoryDisplay = ({ handleCategoryPress, categories }: Props) => {

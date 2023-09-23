@@ -348,7 +348,7 @@ export default function Map({ bookmarkReference, markers }: any) {
             }
           }}
         >
-          {markers.map((marker, index) => (
+          {markers.map((marker: any, index: any) => (
             <MapMarker
               markerData={marker}
               key={index}
@@ -367,7 +367,7 @@ export default function Map({ bookmarkReference, markers }: any) {
               language="de"
               strokeWidth={3}
               strokeColor={colors.text}
-              onReady={(e) => setDistance(e.distance)}
+              onReady={(e: any) => setDistance(e.distance)}
             />
           )}
         </MapView>
