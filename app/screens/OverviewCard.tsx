@@ -13,7 +13,10 @@ interface Props {
   setModalVisible: (x: boolean) => void;
   setActiveItem: (x: number) => void;
   bookmarkReference: any;
+  locationType: string;
 }
+
+const colorMatching = {};
 
 const OverviewCard = ({
   name,
@@ -24,14 +27,27 @@ const OverviewCard = ({
   setModalVisible,
   setActiveItem,
   bookmarkReference,
+  locationType,
 }: Props) => {
   const { colors } = useTheme();
+
+  let accentcolor = "black";
+
+  if (locationType === "donate") {
+    accentcolor = "#19CD91";
+  }
+  if (locationType === "repair") {
+    accentcolor = "#82A0D8";
+  }
+  if (locationType === "dispose") {
+    accentcolor = "#ECEE81";
+  }
 
   return (
     <TouchableOpacity
       style={{
         ...styles.container,
-        borderColor: colors.border,
+        borderColor: accentcolor,
         backgroundColor: colors.card,
       }}
       onPress={() => {
@@ -47,15 +63,15 @@ const OverviewCard = ({
             onPress={() => bookmarkReference.handleBookmarks(id)}
           >
             {bookmarkReference.bookMarkedIds.includes(id) ? (
-              <FontAwesome name="bookmark" size={24} color={colors.primary} />
+              <FontAwesome name="bookmark" size={24} color={accentcolor} />
             ) : (
-              <FontAwesome name="bookmark-o" size={24} color={colors.primary} />
+              <FontAwesome name="bookmark-o" size={24} color={accentcolor} />
             )}
           </TouchableOpacity>
         </View>
       </View>
       <View
-        style={{ ...styles.seperator, backgroundColor: colors.border }}
+        style={{ ...styles.seperator, backgroundColor: accentcolor }}
       ></View>
       <View style={styles.bottomContainer}>
         {categories.map((category, index) => (

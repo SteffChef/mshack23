@@ -9,6 +9,7 @@ import ThemeToggle from "./ThemeToggle";
 import { FontAwesome5 } from "@expo/vector-icons";
 import { FontAwesome } from "@expo/vector-icons";
 import Bookmarks from "./Bookmarks";
+import Logo from "./Logo";
 
 const NavigationComponent = () => {
   const { colors } = useTheme();
@@ -40,7 +41,7 @@ const NavigationComponent = () => {
   ///längengrad/breitengrad
 
   const fetchData = async () => {
-    fetch("http://172.16.2.102:8080/location/all/51.950794/7.638197", {
+    fetch("http://172.16.2.226:8080/location/all/51.950794/7.638197", {
       method: "GET",
     })
       .then((response) => response.json())
@@ -66,8 +67,8 @@ const NavigationComponent = () => {
   }, []);
 
   const MapIcon = ({ color }: any) => {
-    return <FontAwesome5 name="map-pin" size={24} color={color} />
-  }
+    return <FontAwesome5 name="map-pin" size={24} color={color} />;
+  };
 
   return (
     <HomeLayout.Navigator
@@ -77,7 +78,11 @@ const NavigationComponent = () => {
         name="Überblick"
         initialParams={data}
         component={OverviewContent}
-        options={{ headerRight: ThemeToggle, tabBarIcon: HomeIcon }}
+        options={{
+          headerRight: ThemeToggle,
+          tabBarIcon: HomeIcon,
+          headerLeft: Logo,
+        }}
       />
       <HomeLayout.Screen
         name="Karte"
