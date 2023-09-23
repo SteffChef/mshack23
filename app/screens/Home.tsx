@@ -2,7 +2,6 @@ import React, { useContext, useEffect, useState } from "react";
 import { NavigationContainer, useTheme } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import Overview from "./Overview";
-import Page2 from "./Page2";
 import Map from "./Map/Map";
 import { ThemeContext } from "../colorScheme/ThemeContext";
 import { CustomDarkTheme, CustomLightTheme } from "../colorScheme/Theme";
@@ -59,9 +58,7 @@ const NavigationComponent = () => {
   };
 
   const MapCall = () => {
-    const themeContext = useContext(ThemeContext);
-  
-    return <Map bookmarkReference={bookmarkReference} theme={themeContext.themeState} />;
+    return <Map markers={data} bookmarkReference={bookmarkReference} />;
   };
 
   useEffect(() => {
