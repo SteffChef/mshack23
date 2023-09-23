@@ -13,7 +13,7 @@ interface Props {
 const DetailsModal = ({ modalVisible, setModalVisible }: Props) => {
   const { colors } = useTheme();
 
-  
+
   const mock = {
     "id": 1,
     "locationType": "donate",
@@ -24,7 +24,7 @@ const DetailsModal = ({ modalVisible, setModalVisible }: Props) => {
     "openingHours": "immer",
     "infoLink": "https://www.baptisten-muenster.de/gemeindeleben/mission-diakonie/give-box.html",
     "carrier": "",
-    "comments": null,
+    "comments": "perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. ",
     "categories": [
       {
         "id": 2,
@@ -46,10 +46,18 @@ const DetailsModal = ({ modalVisible, setModalVisible }: Props) => {
       animationType="slide"
       visible={modalVisible}
       presentationStyle="pageSheet"
-      style={{ height: "100%" }}
+      style={{ height: "100%" , backgroundColor: colors.background}}
     >
-      <Button title="Close" onPress={() => setModalVisible(false)}></Button>
-      <View style={{ flex: 1, margin: 8 }}>
+      <View style={{ flex: 1, margin: 8, backgroundColor: colors.background }}>
+        <View style={styles.closeButtonContainer}>
+          <FontAwesome 
+            name="times" 
+            size={30}
+            color={colors.text} 
+            onPress={() => setModalVisible(false)} 
+            style={{color: colors.text, ...styles.closeButton}}
+          />
+        </View>
         <View style={styles.headerContainer}>
           <View style={styles.innerContainer}>
             <Text style={{ color: colors.text, ...styles.title }}>
@@ -63,11 +71,11 @@ const DetailsModal = ({ modalVisible, setModalVisible }: Props) => {
             handleCategoryPress={() => {}}
           />
         </View>
-        <ScrollView style={styles.descriptionContainer}>
+        <View style={styles.descriptionContainer}>
           <Text style={{ color: colors.text, ...styles.description }}>
             {mock.comments}
           </Text>
-        </ScrollView>
+        </View>
         <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
           <Text style={{ color: colors.text, fontSize: 18 }}>
             {mock.openingHours}
@@ -85,12 +93,11 @@ export default DetailsModal;
 
 const styles = StyleSheet.create({
   descriptionContainer: {
-    flex: 1,
     marginTop: 10,
     paddingLeft: 9,
     paddingBottom: 8,
     borderRadius: 10,
-    borderWidth: 2,
+    borderWidth: 1.1,
   },
   innerContainer: {
     flexDirection: "row",
@@ -117,5 +124,15 @@ const styles = StyleSheet.create({
     height: 60,
     justifyContent: "center",
     alignItems: "center",
+  },
+  closeButtonContainer: {
+    position: 'absolute',
+    top: 10,
+    right: 10,
+    zIndex: 1,
+  },
+  closeButton: {
+    borderRadius: 15,
+    padding: 5,
   },
 });
