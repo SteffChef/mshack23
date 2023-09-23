@@ -1,26 +1,28 @@
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
-import React, { useState } from "react";
+import React from "react";
 import { FontAwesome } from "@expo/vector-icons";
 import CategoryIcon from "./CategoryIcon";
 import { useTheme } from "@react-navigation/native";
 
 interface Props {
   name: string;
+  id: number;
   distance: number;
   categories: string[];
   activeCategory: string;
   setModalVisible: (x: boolean) => void;
+  bookmarkReference: any;
 }
 
 const OverviewCard = ({
   name,
   distance,
+  id,
   categories,
   activeCategory,
   setModalVisible,
+  bookmarkReference,
 }: Props) => {
-  const [isBookmarked, setIsBookmarked] = useState(false);
-
   const { colors } = useTheme();
 
   return (
@@ -36,8 +38,10 @@ const OverviewCard = ({
         <Text style={{ ...styles.titleText, color: colors.text }}>{name}</Text>
         <View style={styles.upperRightContainer}>
           <Text style={{ color: colors.text }}>{distance}m</Text>
-          <TouchableOpacity onPress={() => setIsBookmarked(!isBookmarked)}>
-            {isBookmarked ? (
+          <TouchableOpacity
+            onPress={() => bookmarkReference.handleBookmarks(id)}
+          >
+            {bookmarkReference.bookMarkedIds.includes(id) ? (
               <FontAwesome name="bookmark" size={24} color={colors.primary} />
             ) : (
               <FontAwesome name="bookmark-o" size={24} color={colors.primary} />
@@ -91,5 +95,6 @@ const styles = StyleSheet.create({
   titleText: {
     fontSize: 15,
     fontWeight: "700",
+    flex: 1,
   },
 });
