@@ -1,8 +1,14 @@
 import React from 'react';
 import { useState, useEffect } from 'react';
 import MapView from 'react-native-maps';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, View, TouchableOpacity } from 'react-native';
 import MapMarker from './MapMarker';
+import MapViewDirections from 'react-native-maps-directions';
+import DetailsModal from '../DetailsModal';
+import { FontAwesome } from "@expo/vector-icons";
+import { Button, Card, Text } from 'react-native-paper';
+import { CustomDarkTheme, CustomLightTheme } from '../../colorScheme/Theme';
+import { useTheme } from '@react-navigation/native';
 
 export default function Map({theme}:any) {
     const mapDefault:Array<any> = [
@@ -248,11 +254,35 @@ export default function Map({theme}:any) {
     }
     
     const [mapTheme, setMapTheme] = useState(mapDefault);
-    const [initialRegion, setInitialRegion] = useState(msCoords)
     const [region, setRegion] = useState(msCoords)
     const [mapAlreadyChanged, setMapAlreadyChanged] = useState(false);
-    const [simplifyIcons, setSimplifyIcons] = useState(false);
-    const [markers, setMarkers] = useState([]);
+    const [simplifyIcons, setSimplifyIcons] = useState(true);
+    const [userLocation, setUserLocation] = useState();
+    const [markers, setMarkers] = useState([])
+    const [destination, setDestination] = useState(null);
+    const [bottomSheet, setBottomSheet] = useState<MarkerDataInterface>({id:0, locationType:'', name:'', address:'', latitude:0, longitude:0, openingHours:'', infoLink:'', categories:[]});
+    const [bottomSheetIsOpen, setBottomSheetIsOpen] = useState(false);
+    const [modalVisible, setModalVisible] = useState(false);
+    const [isBookmarked, setIsBookmarked] = useState(false);
+    const [distance, setDistance] = useState(0);
+    const [mapSize, setMapSize] = useState<any>("100%");
+    const GOOGLE_MAPS_APIKEY = "AIzaSyDLTev5-fhyK1qG7q1MwNtE3uJKSpIlM0I";
+
+    const { colors } = useTheme();
+
+    interface MarkerDataInterface {
+        "id":number,
+        "locationType":string,
+        "name":string,
+        "address":string,
+        "latitude":number,
+        "longitude":number,
+        "openingHours":string,
+        "infoLink":string,
+        "carrier"?:string,
+        "comments"?:string,
+        "categories":Array<any>
+    }
 
     useEffect(() => {
         if (theme === 'dark') {
@@ -269,12 +299,20 @@ export default function Map({theme}:any) {
         .catch((error) => console.error(error))
     }, []);
 
+    useEffect(() => {
+        if(bottomSheetIsOpen) {
+            setMapSize("75%");
+        } else {
+            setMapSize("100%");
+        }
+    }, [bottomSheetIsOpen]);
+
     return (
         <View style={styles.container}>
+            <>
             <MapView   
-                style={styles.map}
+                style={{width: '100%', height: mapSize}}
                 customMapStyle={mapTheme}
-                initialRegion={initialRegion}
                 loadingEnabled={true}
                 showsUserLocation={true}
                 showsMyLocationButton={true}
@@ -282,7 +320,10 @@ export default function Map({theme}:any) {
                 provider='google'
                 onUserLocationChange={(event) => {
                     const coordinates:any = event.nativeEvent.coordinate;
-                    if(!mapAlreadyChanged) {
+                    if(!bottomSheetIsOpen) {
+                        setUserLocation(coordinates);
+                    }
+                    if(!mapAlreadyChanged && coordinates.latitude && coordinates.longitude ) {
                         setRegion({
                             latitude: coordinates.latitude,
                             longitude: coordinates.longitude,
@@ -291,29 +332,70 @@ export default function Map({theme}:any) {
                         });
                         setMapAlreadyChanged(true);
                     }
+                    else if(!coordinates.latitude && !coordinates.longitude) {
+                        setMapAlreadyChanged(true);
+                        setRegion(msCoords);
+                    }
                 }}
                 onRegionChange={(region) => {
-                    if(region.latitudeDelta > 0.01) {
+                    if(region.latitudeDelta > 0.03) {
                         setSimplifyIcons(true);
                     } else {
                         setSimplifyIcons(false);
                     }
                 }}
                 >
-            {markers.map((marker) => (
-                <MapMarker markerData={marker} id={marker} theme={theme} simplify={simplifyIcons}/>
-            ))}
+                {markers.map((marker, index) => (
+                    <MapMarker markerData={marker} key={index} theme={theme} simplify={simplifyIcons} setDestination={setDestination} setBottomSheet={setBottomSheet} setBottomSheetIsOpen={setBottomSheetIsOpen}/>
+                ))}
+                {(GOOGLE_MAPS_APIKEY && destination && bottomSheetIsOpen) &&
+                <MapViewDirections
+                        origin={userLocation}
+                        destination={destination}
+                        apikey={GOOGLE_MAPS_APIKEY}
+                        language="de"
+                        strokeWidth={3}
+                        strokeColor={colors.text}
+                        onReady={(e) => setDistance(e.distance)}
+                    />}
             </MapView>
+            {(bottomSheet !== null && bottomSheetIsOpen) &&
+                <Card key={bottomSheet.id} style={{backgroundColor:colors.card, height:"26%", borderRadius:0}}>
+                    <Card.Title 
+                        title={<Text style={{color:colors.text}}> {bottomSheet.name} </Text>} 
+                        subtitle={<Text style={{color:colors.text}}> {bottomSheet.address} </Text>} 
+                    />
+                    <Card.Content 
+                        style={{flexDirection:'row', justifyContent:'space-between'}}
+                    >
+                        <Text style={{color:colors.text}}>{distance.toFixed(1)} km von dir entfernt</Text>
+                        <TouchableOpacity onPress={() => setIsBookmarked(!isBookmarked)}>
+                            {isBookmarked ? (
+                            <FontAwesome name="bookmark" size={24} color={colors.text} />
+                            ) : (
+                            <FontAwesome name="bookmark-o" size={24} color={colors.text} />
+                            )}
+                        </TouchableOpacity>
+                    </Card.Content>
+                    <Card.Actions>
+                        <Button onPress={() => setBottomSheetIsOpen(false)}>Schließen</Button>
+                        <Button onPress={() => setModalVisible(true)}>Mehr Informationen</Button>
+                    </Card.Actions>
+                </Card>
+            }
+            <DetailsModal
+                modalVisible={modalVisible}
+                setModalVisible={setModalVisible}
+                data={bottomSheet}
+            />
+            </>
         </View>
         );
     }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-  map: {
-    width: '100%',
-    height: '100%',
-  },
-});
+    container: {
+        flex: 1,
+        justifyContent: 'flex-start',
+      }
+  });

@@ -36,6 +36,8 @@ const Overview = ({ data, bookmarkReference }: Props) => {
     name: string;
     distance: number;
     categories: string[];
+    comments?: string;
+    openingHours?: string;
   }
 
   return (
@@ -51,6 +53,7 @@ const Overview = ({ data, bookmarkReference }: Props) => {
       <DetailsModal
         modalVisible={modalVisible}
         setModalVisible={setModalVisible}
+        data={data}
       />
 
       <CategoryDrawer

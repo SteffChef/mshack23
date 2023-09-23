@@ -61,6 +61,9 @@ const NavigationComponent = () => {
   useEffect(() => {
     fetchData();
   }, []);
+  const MapIcon = ({ color }: any) => {
+    return <FontAwesome5 name="map-pin" size={24} color={color} />
+  }
 
   return (
     <HomeLayout.Navigator
@@ -75,7 +78,7 @@ const NavigationComponent = () => {
       <HomeLayout.Screen
         name="Karte"
         component={MapCall}
-        options={{ headerRight: ThemeToggle }}
+        options={{ headerRight: ThemeToggle, tabBarIcon: MapIcon }}
       />
       <HomeLayout.Screen
         name="Lesezeichen"
