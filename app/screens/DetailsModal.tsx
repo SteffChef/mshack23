@@ -13,15 +13,32 @@ interface Props {
 const DetailsModal = ({ modalVisible, setModalVisible }: Props) => {
   const { colors } = useTheme();
 
+  
   const mock = {
-    name: "Name",
-    description:
-      "quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum",
-    adress:
-      "nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat",
-    isBookmarked: true,
-    pic: "https://www.muensterhack.de/img/logo_muensterhack.png",
-    openingHours: "Mo-Do 9-17 Uhr",
+    "id": 1,
+    "locationType": "donate",
+    "name": "Givebox Christuskirche",
+    "address": "Ecke Hammerstraße/Friedrich-Ebert-Straße auf dem Grundstück der Christuskirche (Evangelisch-Freikirchliche-Gemeinde)",
+    "latitude": 51.942209,
+    "longitude": 7.623405,
+    "openingHours": "immer",
+    "infoLink": "https://www.baptisten-muenster.de/gemeindeleben/mission-diakonie/give-box.html",
+    "carrier": "",
+    "comments": null,
+    "categories": [
+      {
+        "id": 2,
+        "name": "household"
+      },
+      {
+        "id": 3,
+        "name": "media"
+      },
+      {
+        "id": 4,
+        "name": "toys"
+      }
+    ]
   };
 
   return (
@@ -48,7 +65,7 @@ const DetailsModal = ({ modalVisible, setModalVisible }: Props) => {
         </View>
         <ScrollView style={styles.descriptionContainer}>
           <Text style={{ color: colors.text, ...styles.description }}>
-            {mock.description}
+            {mock.comments}
           </Text>
         </ScrollView>
         <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
