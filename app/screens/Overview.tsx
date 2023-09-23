@@ -16,6 +16,7 @@ const Overview = ({ data, bookmarkReference }: Props) => {
 
   const [activeCategory, setActiveCategory] = useState<string>("");
   const [activeLocation, setActiveLocation] = useState<string>("");
+  const [activeItem, setActiveItem] = useState<number>(1);
 
   const handleCategoryPress = (text: string) => {
     if (text === activeCategory) {
@@ -53,7 +54,7 @@ const Overview = ({ data, bookmarkReference }: Props) => {
       <DetailsModal
         modalVisible={modalVisible}
         setModalVisible={setModalVisible}
-        data={data}
+        item={data.filter((item: any) => item.id === activeItem)[0]}
       />
 
       <CategoryDrawer
@@ -87,6 +88,7 @@ const Overview = ({ data, bookmarkReference }: Props) => {
             key={item.id}
             activeCategory={activeCategory}
             setModalVisible={setModalVisible}
+            setActiveItem={setActiveItem}
             bookmarkReference={bookmarkReference}
           />
         )}
