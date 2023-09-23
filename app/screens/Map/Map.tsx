@@ -1,10 +1,14 @@
 import React from 'react';
 import { useState, useEffect } from 'react';
 import MapView from 'react-native-maps';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, View, TouchableOpacity } from 'react-native';
 import MapMarker from './MapMarker';
 import MapViewDirections from 'react-native-maps-directions';
+import DetailsModal from '../DetailsModal';
+import { FontAwesome } from "@expo/vector-icons";
 import { Button, Card, Text } from 'react-native-paper';
+import { CustomDarkTheme, CustomLightTheme } from '../../colorScheme/Theme';
+import { useTheme } from '@react-navigation/native';
 
 export default function Map({theme}:any) {
     const mapDefault:Array<any> = [
@@ -258,8 +262,13 @@ export default function Map({theme}:any) {
     const [destination, setDestination] = useState(null);
     const [bottomSheet, setBottomSheet] = useState<MarkerDataInterface>({id:0, locationType:'', name:'', address:'', latitude:0, longitude:0, openingHours:'', infoLink:'', categories:[]});
     const [bottomSheetIsOpen, setBottomSheetIsOpen] = useState(false);
+    const [modalVisible, setModalVisible] = useState(false);
+    const [isBookmarked, setIsBookmarked] = useState(false);
+    const [distance, setDistance] = useState(0);
     const [mapSize, setMapSize] = useState<any>("100%");
     const GOOGLE_MAPS_APIKEY = "AIzaSyDLTev5-fhyK1qG7q1MwNtE3uJKSpIlM0I";
+
+    const { colors } = useTheme();
 
     interface MarkerDataInterface {
         "id":number,
@@ -292,7 +301,7 @@ export default function Map({theme}:any) {
 
     useEffect(() => {
         if(bottomSheetIsOpen) {
-            setMapSize("80%");
+            setMapSize("75%");
         } else {
             setMapSize("100%");
         }
@@ -302,7 +311,7 @@ export default function Map({theme}:any) {
         <View style={styles.container}>
             <>
             <MapView   
-                style={{width: '100%', height: mapSize,}}
+                style={{width: '100%', height: mapSize}}
                 customMapStyle={mapTheme}
                 loadingEnabled={true}
                 showsUserLocation={true}
@@ -346,28 +355,47 @@ export default function Map({theme}:any) {
                         apikey={GOOGLE_MAPS_APIKEY}
                         language="de"
                         strokeWidth={3}
-                        strokeColor={theme === 'dark' ? '#fff' : '#000'}
-                        onStart={() => console.log('onStart')}
-                        onReady={() => console.log('onReady')}
-                        onError={() => console.log('GOT AN ERROR')}
+                        strokeColor={colors.text}
+                        onReady={(e) => setDistance(e.distance)}
                     />}
             </MapView>
             {(bottomSheet !== null && bottomSheetIsOpen) &&
-                <Card key={bottomSheet.id}>
-                    <Card.Title title={bottomSheet.name} subtitle={bottomSheet.address} />
+                <Card key={bottomSheet.id} style={{backgroundColor:colors.card, height:"26%", borderRadius:0}}>
+                    <Card.Title 
+                        title={<Text style={{color:colors.text}}> {bottomSheet.name} </Text>} 
+                        subtitle={<Text style={{color:colors.text}}> {bottomSheet.address} </Text>} 
+                    />
+                    <Card.Content 
+                        style={{flexDirection:'row', justifyContent:'space-between'}}
+                    >
+                        <Text style={{color:colors.text}}>{distance.toFixed(1)} km von dir entfernt</Text>
+                        <TouchableOpacity onPress={() => setIsBookmarked(!isBookmarked)}>
+                            {isBookmarked ? (
+                            <FontAwesome name="bookmark" size={24} color={colors.text} />
+                            ) : (
+                            <FontAwesome name="bookmark-o" size={24} color={colors.text} />
+                            )}
+                        </TouchableOpacity>
+                    </Card.Content>
                     <Card.Actions>
                         <Button onPress={() => setBottomSheetIsOpen(false)}>Schließen</Button>
-                        <Button onPress={() => setBottomSheetIsOpen(false)}>Ok</Button>
+                        <Button onPress={() => setModalVisible(true)}>Mehr Informationen</Button>
                     </Card.Actions>
                 </Card>
             }
+            <DetailsModal
+                modalVisible={modalVisible}
+                setModalVisible={setModalVisible}
+                data={bottomSheet}
+            />
             </>
         </View>
         );
     }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  }
-});
+    container: {
+        flex: 1,
+        justifyContent: 'flex-start',
+      }
+  });

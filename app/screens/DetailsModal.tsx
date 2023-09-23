@@ -8,38 +8,11 @@ import CategoryDrawer from "./CategoryDrawer";
 interface Props {
   modalVisible: boolean;
   setModalVisible: (x: boolean) => void;
+  data: any;
 }
 
-const DetailsModal = ({ modalVisible, setModalVisible }: Props) => {
+const DetailsModal = ({ modalVisible, setModalVisible, data }: Props) => {
   const { colors } = useTheme();
-
-  
-  const mock = {
-    "id": 1,
-    "locationType": "donate",
-    "name": "Givebox Christuskirche",
-    "address": "Ecke Hammerstraße/Friedrich-Ebert-Straße auf dem Grundstück der Christuskirche (Evangelisch-Freikirchliche-Gemeinde)",
-    "latitude": 51.942209,
-    "longitude": 7.623405,
-    "openingHours": "immer",
-    "infoLink": "https://www.baptisten-muenster.de/gemeindeleben/mission-diakonie/give-box.html",
-    "carrier": "",
-    "comments": null,
-    "categories": [
-      {
-        "id": 2,
-        "name": "household"
-      },
-      {
-        "id": 3,
-        "name": "media"
-      },
-      {
-        "id": 4,
-        "name": "toys"
-      }
-    ]
-  };
 
   return (
     <Modal
@@ -53,7 +26,7 @@ const DetailsModal = ({ modalVisible, setModalVisible }: Props) => {
         <View style={styles.headerContainer}>
           <View style={styles.innerContainer}>
             <Text style={{ color: colors.text, ...styles.title }}>
-              {mock.name}
+              {data.name}
             </Text>
           </View>
         </View>
@@ -65,12 +38,12 @@ const DetailsModal = ({ modalVisible, setModalVisible }: Props) => {
         </View>
         <ScrollView style={styles.descriptionContainer}>
           <Text style={{ color: colors.text, ...styles.description }}>
-            {mock.comments}
+            {data.comments}
           </Text>
         </ScrollView>
         <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
           <Text style={{ color: colors.text, fontSize: 18 }}>
-            {mock.openingHours}
+            {data.openingHours}
           </Text>
           <View style={styles.mapIcon}>
             <FontAwesome name="map-marker" size={38} color="black" />

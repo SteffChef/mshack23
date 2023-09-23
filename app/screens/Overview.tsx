@@ -26,6 +26,8 @@ const Overview = () => {
     name: string;
     distance: number;
     categories: string[];
+    comments?: string;
+    openingHours?: string;
   }
 
   const data: datatype[] = [
@@ -96,6 +98,7 @@ const Overview = () => {
       <DetailsModal
         modalVisible={modalVisible}
         setModalVisible={setModalVisible}
+        data={data}
       />
       <View style={{ width: "93%", justifyContent: "center" }}>
         <SearchBar setSearchInput={setSearchInput} searchInput={searchInput} />
