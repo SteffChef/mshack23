@@ -10,7 +10,6 @@ import ThemeToggle from "./ThemeToggle";
 import { FontAwesome5 } from "@expo/vector-icons";
 import { FontAwesome } from "@expo/vector-icons";
 import Bookmarks from "./Bookmarks";
-import { ApiDatatype } from "./APIInterface";
 
 const NavigationComponent = () => {
   const { colors } = useTheme();
@@ -19,15 +18,32 @@ const NavigationComponent = () => {
 
   const [data, setData] = useState<any>([]);
 
+  const [bookMarkedIds, setBookmarkedIds] = useState<number[]>([]);
+
+  const handleBookmarks = (id: number) => {
+    if (bookMarkedIds.includes(id)) {
+      const updatedNumbers = bookMarkedIds.filter((n) => n !== id);
+      setBookmarkedIds(updatedNumbers);
+    } else {
+      setBookmarkedIds([...bookMarkedIds, id]);
+    }
+  };
+  const bookmarkReference = { bookMarkedIds, handleBookmarks };
+
   const HomeIcon = ({ color }: any) => {
     return <FontAwesome5 name="home" size={24} color={color} />;
   };
+
   const BookmarkIcon = ({ color }: any) => {
     return <FontAwesome name="bookmark" size={24} color={color} />;
   };
 
+  ///längengrad/breitengrad
+
   const fetchData = async () => {
-    fetch("http://172.16.2.102:8080/location/all", { method: "GET" })
+    fetch("http://172.16.2.102:8080/location/all/51.950794/7.638197", {
+      method: "GET",
+    })
       .then((response) => response.json())
       .then((json) => {
         setData(json);
@@ -36,7 +52,10 @@ const NavigationComponent = () => {
   };
 
   const OverviewContent = () => {
-    return <Overview data={data} />;
+    return <Overview data={data} bookmarkReference={bookmarkReference} />;
+  };
+  const BookmarkContent = () => {
+    return <Bookmarks data={data} bookmarkReference={bookmarkReference} />;
   };
 
   useEffect(() => {
@@ -60,7 +79,7 @@ const NavigationComponent = () => {
       />
       <HomeLayout.Screen
         name="Lesezeichen"
-        component={Bookmarks}
+        component={BookmarkContent}
         options={{ headerRight: ThemeToggle, tabBarIcon: BookmarkIcon }}
       />
     </HomeLayout.Navigator>

@@ -1,85 +1,18 @@
 import { View, Text, ScrollView, StyleSheet } from "react-native";
 import React, { useState } from "react";
 import DetailsModal from "./DetailsModal";
-import CategoryDrawer from "./CategoryDrawer";
 import OverviewCard from "./OverviewCard";
 import { useTheme } from "@react-navigation/native";
 
-const Bookmarks = () => {
-  const { colors } = useTheme();
+interface Props {
+  data: any;
+  bookmarkReference: any;
+}
 
+const Bookmarks = ({ data, bookmarkReference }: Props) => {
   const [modalVisible, setModalVisible] = useState(false);
 
   const [activeCategory, setActiveCategory] = useState<string>("");
-
-  const handleCategoryPress = (text: string) => {
-    if (text === activeCategory) {
-      setActiveCategory("");
-    } else {
-      setActiveCategory(text);
-    }
-  };
-
-  interface datatype {
-    name: string;
-    distance: number;
-    categories: string[];
-  }
-
-  const data: datatype[] = [
-    {
-      name: "Station",
-      distance: 500,
-      categories: [
-        "clothing",
-        "household",
-        "toys",
-        "media",
-        "electronics",
-        "bicycles",
-        "furniture",
-      ],
-    },
-    {
-      name: "Station",
-      distance: 500,
-      categories: [
-        "clothing",
-        "household",
-        "toys",
-        "media",
-        "electronics",
-        "bicycles",
-        "furniture",
-      ],
-    },
-    {
-      name: "Station",
-      distance: 500,
-      categories: [
-        "clothing",
-        "household",
-        "toys",
-        "media",
-        "electronics",
-        "bicycles",
-        "furniture",
-      ],
-    },
-    {
-      name: "Station",
-      distance: 500,
-      categories: [
-        "clothing",
-        "household",
-        "toys",
-        "media",
-        "electronics",
-        "bicycles",
-        "furniture",
-      ],
-    },
-  ];
 
   return (
     <View
@@ -88,7 +21,7 @@ const Bookmarks = () => {
         gap: 20,
         marginTop: 20,
         alignItems: "center",
-        paddingBottom: 135,
+        paddingBottom: 0,
       }}
     >
       <DetailsModal
@@ -98,18 +31,19 @@ const Bookmarks = () => {
 
       <ScrollView style={styles.cardContainer}>
         {data
-          .filter(
-            (item) =>
-              item.categories.includes(activeCategory) || activeCategory === ""
+          .filter((dataItem: any) =>
+            bookmarkReference.bookMarkedIds.includes(dataItem.id)
           )
-          .map((item: datatype, index) => (
+          .map((item: any, index: number) => (
             <OverviewCard
               name={item.name}
               distance={item.distance}
-              categories={item.categories}
+              categories={item.categories.map((category: any) => category.name)}
               key={index}
               activeCategory={activeCategory}
               setModalVisible={setModalVisible}
+              id={item.id}
+              bookmarkReference={bookmarkReference}
             />
           ))}
       </ScrollView>

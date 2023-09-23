@@ -1,29 +1,34 @@
-import { View, Text, StyleSheet, ScrollView } from "react-native";
+import { View, Text, StyleSheet, ScrollView, FlatList } from "react-native";
 import React, { useState } from "react";
-import { useTheme } from "@react-navigation/native";
 import SearchBar from "./SearchBar";
 import OverviewCard from "./OverviewCard";
 import CategoryDrawer from "./CategoryDrawer";
 import DetailsModal from "./DetailsModal";
-import { ApiDatatype } from "./APIInterface";
+import LocationTypeDrawer from "./LocationTypeDrawer";
 
 interface Props {
-  data: ApiDatatype[];
+  data: any;
+  bookmarkReference: any;
 }
 
-const Overview = ({ data }: Props) => {
-  const { colors } = useTheme();
-
+const Overview = ({ data, bookmarkReference }: Props) => {
   const [modalVisible, setModalVisible] = useState(false);
 
-  const [searchInput, setSearchInput] = useState("");
   const [activeCategory, setActiveCategory] = useState<string>("");
+  const [activeLocation, setActiveLocation] = useState<string>("");
 
   const handleCategoryPress = (text: string) => {
     if (text === activeCategory) {
       setActiveCategory("");
     } else {
       setActiveCategory(text);
+    }
+  };
+  const handleLocationPress = (text: string) => {
+    if (text === activeLocation) {
+      setActiveLocation("");
+    } else {
+      setActiveLocation(text);
     }
   };
 
@@ -47,33 +52,44 @@ const Overview = ({ data }: Props) => {
         modalVisible={modalVisible}
         setModalVisible={setModalVisible}
       />
-      <View style={{ width: "93%", justifyContent: "center" }}>
-        <SearchBar setSearchInput={setSearchInput} searchInput={searchInput} />
-      </View>
 
       <CategoryDrawer
         activeCategory={activeCategory}
         handleCategoryPress={handleCategoryPress}
       />
-      <ScrollView style={styles.cardContainer}>
-        {data
-          .filter((item) =>
+      <LocationTypeDrawer
+        activeLocationType={activeLocation}
+        handleLocationPress={handleLocationPress}
+      />
+      <FlatList
+        style={{ width: "93%" }}
+        onEndReachedThreshold={5}
+        data={data
+          .filter((item: any) =>
             item.categories.some(
-              (category) =>
+              (category: any) =>
                 category.name === activeCategory || activeCategory === ""
             )
           )
-          .map((item, index) => (
-            <OverviewCard
-              name={item.name}
-              distance={50}
-              categories={item.categories.map((item) => item.name)}
-              key={index}
-              activeCategory={activeCategory}
-              setModalVisible={setModalVisible}
-            />
-          ))}
-      </ScrollView>
+          .filter(
+            (item: any) =>
+              item.locationType === activeLocation || activeLocation === ""
+          )}
+        renderItem={({ item }) => (
+          <OverviewCard
+            name={item.name}
+            distance={item.distance}
+            id={item.id}
+            categories={item.categories.map((item: any) => item.name)}
+            key={item.id}
+            activeCategory={activeCategory}
+            setModalVisible={setModalVisible}
+            bookmarkReference={bookmarkReference}
+          />
+        )}
+        keyExtractor={(item) => item.id.toString()}
+        windowSize={20}
+      />
     </View>
   );
 };
