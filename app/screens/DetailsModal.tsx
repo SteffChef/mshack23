@@ -7,11 +7,11 @@ import CategoryDrawer from "./CategoryDrawer";
 
 interface Props {
   modalVisible: boolean;
+  item: any;
   setModalVisible: (x: boolean) => void;
-  data: any;
 }
 
-const DetailsModal = ({ modalVisible, setModalVisible, data }: Props) => {
+const DetailsModal = ({ modalVisible, setModalVisible, item }: Props) => {
   const { colors } = useTheme();
 
   return (
@@ -19,44 +19,55 @@ const DetailsModal = ({ modalVisible, setModalVisible, data }: Props) => {
       animationType="slide"
       visible={modalVisible}
       presentationStyle="pageSheet"
-      style={{ height: "100%" , backgroundColor: colors.background}}
+      style={{ height: 20, backgroundColor: colors.background }}
     >
+      <Text>{item.length}</Text>
       <View style={{ flex: 1, margin: 8, backgroundColor: colors.background }}>
         <View style={styles.closeButtonContainer}>
-          <FontAwesome 
-            name="times" 
+          <FontAwesome
+            name="times"
             size={30}
-            color={colors.text} 
-            onPress={() => setModalVisible(false)} 
-            style={{color: colors.text, ...styles.closeButton}}
+            color={colors.text}
+            onPress={() => setModalVisible(false)}
+            style={{ color: colors.text, ...styles.closeButton }}
           />
         </View>
         <View style={styles.headerContainer}>
           <View style={styles.innerContainer}>
             <Text style={{ color: colors.text, ...styles.title }}>
-              {data.name}
+              {item.name}
             </Text>
           </View>
         </View>
-        <View style={{ height: 55, borderRadius: 5, paddingVertical: 5, marginTop: 10 }}>
-          <CategoryDrawer
-            activeCategory={""}
-            handleCategoryPress={() => {}}
-          />
+        <View
+          style={{
+            height: 55,
+            borderRadius: 5,
+            paddingVertical: 5,
+            marginTop: 10,
+          }}
+        >
+          <CategoryDrawer activeCategory={""} handleCategoryPress={() => {}} />
         </View>
         <View style={styles.descriptionContainer}>
           <Text style={{ color: colors.text, ...styles.description }}>
-            {data.comments}
+            {item.comments}
           </Text>
         </View>
-        <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+        <View
+          style={{
+            flexDirection: "row",
+            justifyContent: "space-between",
+            alignItems: "center",
+          }}
+        >
           <Text style={{ color: colors.text, fontSize: 18 }}>
-            {data.openingHours}
+            {item.openingHours}
           </Text>
-          <View style={styles.mapIcon}>
-            <FontAwesome name="map-marker" size={38} color="black" />
-          </View>
         </View>
+      </View>
+      <View style={styles.mapIcon}>
+        <FontAwesome name="map-marker" size={38} color="black" />
       </View>
     </Modal>
   );
@@ -99,7 +110,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   closeButtonContainer: {
-    position: 'absolute',
+    position: "absolute",
     top: 10,
     right: 10,
     zIndex: 1,
