@@ -1,9 +1,10 @@
-import { View, Text, Button, Modal } from "react-native";
+import { View, Text, Button, Modal, TouchableOpacity } from "react-native";
 import React, { useState } from "react";
 import { StyleSheet, Image, ScrollView, ImageBackground } from "react-native";
 import { NavigationContainer, useTheme } from "@react-navigation/native";
 import { FontAwesome } from "@expo/vector-icons";
 import CategoryDrawer from "./CategoryDrawer";
+import { useNavigation } from "@react-navigation/native";
 
 interface Props {
   modalVisible: boolean;
@@ -13,6 +14,7 @@ interface Props {
 
 const DetailsModal = ({ modalVisible, setModalVisible, data }: Props) => {
   const { colors } = useTheme();
+  const navigation = useNavigation();
 
   return (
     <Modal
@@ -46,7 +48,9 @@ const DetailsModal = ({ modalVisible, setModalVisible, data }: Props) => {
             {data.openingHours}
           </Text>
           <View style={styles.mapIcon}>
-            <FontAwesome name="map-marker" size={38} color="black" />
+            <TouchableOpacity onPress={() => {navigation.navigate("Karte"); setModalVisible(false)}}>
+              <FontAwesome name="map-marker" size={38} color="black" />
+            </TouchableOpacity>
           </View>
         </View>
       </View>
