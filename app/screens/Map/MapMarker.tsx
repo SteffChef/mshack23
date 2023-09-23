@@ -4,68 +4,61 @@ import { Marker } from "react-native-maps";
 import { FontAwesome5 } from '@expo/vector-icons';
 import { Feather } from '@expo/vector-icons';
 import { GetIcon } from "../CategoryIcon";
+import { useTheme } from "@react-navigation/native";
 
 export default function MapMarker({ markerData, id, theme, simplify, setDestination, setBottomSheet, setBottomSheetIsOpen }:any) {
     const iconSize = 24;
 
-    const [iconColor, setIconColor] = useState('black');
-
-    useEffect(() => {
-        if (theme === 'dark') {
-            setIconColor('white');
-        } else {
-            setIconColor('black');
-        }
-    }, [theme]);
+    const { colors } = useTheme();
 
     function iconArrangement(categories: any) {
         if(simplify || categories.length === 0) {
             return (
-                <FontAwesome5 name="map-pin" size={iconSize} color={iconColor} />
+                <FontAwesome5 name="map-pin" size={iconSize} color={colors.text} />
             );
         }
         const lenght = categories.length;
         switch (lenght) {
             case 1:
                 return (
-                    <View style={[styles.oneCircle, {borderColor:iconColor}]}>
-                        {GetIcon(categories[0].name, iconSize, iconColor)}
+                    <View style={[styles.oneCircle, {borderColor:colors.text}]}>
+                        {GetIcon(categories[0].name, iconSize, colors.text)}
                     </View>
                 );
             case 2:
                 return (
-                    <View style={[styles.oneCircle, {borderColor:iconColor}]}>
+                    <View style={[styles.oneCircle, {borderColor:colors.text}]}>
                         <View style={styles.row}>
-                            {GetIcon(categories[0].name, iconSize, iconColor)}
-                            {GetIcon(categories[1].name, iconSize, iconColor)}
+                            {GetIcon(categories[0].name, iconSize, colors.text)}
+                            {GetIcon(categories[1].name, iconSize, colors.text)}
                         </View>
                     </View>
 
                 );
             case 3:
                 return (
-                    <View style={[styles.twoCircle, {borderColor:iconColor}]}>
+                    <View style={[styles.twoCircle, {borderColor:colors.text}]}>
                         <View style={styles.row}>
-                            {GetIcon(categories[0].name, iconSize, iconColor)}
-                            {GetIcon(categories[1].name, iconSize, iconColor)}
+                            {GetIcon(categories[0].name, iconSize, colors.text)}
+                            {GetIcon(categories[1].name, iconSize, colors.text)}
                         </View>
                         <View style={styles.row}>
-                            {GetIcon(categories[2].name, iconSize, iconColor)}
+                            {GetIcon(categories[2].name, iconSize, colors.text)}
                         </View>
                     </View>
                 );
             default:
                 return (
-                    <View style={[styles.twoCircle, {borderColor:iconColor}]}>
+                    <View style={[styles.twoCircle, {borderColor:colors.text}]}>
                         <View style={styles.row}
                         >
-                            {GetIcon(categories[0].name, iconSize, iconColor)}
-                            {GetIcon(categories[1].name, iconSize, iconColor)}
+                            {GetIcon(categories[0].name, iconSize, colors.text)}
+                            {GetIcon(categories[1].name, iconSize, colors.text)}
                         </View>
                         <View style={styles.row}
                         >
-                            {GetIcon(categories[2].name, iconSize, iconColor)}
-                            <Feather name="more-horizontal" size={iconSize} color={iconColor} />
+                            {GetIcon(categories[2].name, iconSize, colors.text)}
+                            <Feather name="more-horizontal" size={iconSize} color={colors.text} />
                         </View>
                     </View>
                 );

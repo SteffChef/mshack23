@@ -59,9 +59,7 @@ const NavigationComponent = () => {
   };
 
   const MapCall = () => {
-    const themeContext = useContext(ThemeContext);
-  
-    return <Map bookmarkReference={bookmarkReference} theme={themeContext.themeState} />;
+    return <Map markers={data} bookmarkReference={bookmarkReference} />;
   };
 
   useEffect(() => {

@@ -7,12 +7,9 @@ import MapViewDirections from 'react-native-maps-directions';
 import DetailsModal from '../DetailsModal';
 import { FontAwesome } from "@expo/vector-icons";
 import { Button, Card, Text } from 'react-native-paper';
-import { CustomDarkTheme, CustomLightTheme } from '../../colorScheme/Theme';
 import { useTheme } from '@react-navigation/native';
 
-
-
-export default function Map({bookmarkReference, theme}:any) {
+export default function Map({bookmarkReference, markers}:any) {
     const mapDefault:Array<any> = [
         {
             "featureType": "administrative.land_parcel",
@@ -260,17 +257,15 @@ export default function Map({bookmarkReference, theme}:any) {
     const [mapAlreadyChanged, setMapAlreadyChanged] = useState(false);
     const [simplifyIcons, setSimplifyIcons] = useState(true);
     const [userLocation, setUserLocation] = useState();
-    const [markers, setMarkers] = useState([])
     const [destination, setDestination] = useState(null);
     const [bottomSheet, setBottomSheet] = useState<MarkerDataInterface>({id:0, locationType:'', name:'', address:'', latitude:0, longitude:0, openingHours:'', infoLink:'', categories:[]});
     const [bottomSheetIsOpen, setBottomSheetIsOpen] = useState(false);
     const [modalVisible, setModalVisible] = useState(false);
-    const [isBookmarked, setIsBookmarked] = useState(false);
     const [distance, setDistance] = useState(0);
     const [mapSize, setMapSize] = useState<any>("100%");
     const GOOGLE_MAPS_APIKEY = "AIzaSyDLTev5-fhyK1qG7q1MwNtE3uJKSpIlM0I";
 
-    const { colors } = useTheme();
+    const { colors,dark } = useTheme();
 
     interface MarkerDataInterface {
         "id":number,
@@ -287,19 +282,12 @@ export default function Map({bookmarkReference, theme}:any) {
     }
 
     useEffect(() => {
-        if (theme === 'dark') {
+        if (dark === true) {
             setMapTheme(mapDark);
         } else {
             setMapTheme(mapDefault);
         }
-    }, [theme]);
-
-    useEffect(() => {
-        fetch('http://172.16.2.102:8080/location/all', {method: "GET"})
-        .then((response) => response.json())
-        .then((json) => {setMarkers(json)})
-        .catch((error) => console.error(error))
-    }, []);
+    }, [colors.background]);
 
     useEffect(() => {
         if(bottomSheetIsOpen) {
@@ -348,7 +336,7 @@ export default function Map({bookmarkReference, theme}:any) {
                 }}
                 >
                 {markers.map((marker, index) => (
-                    <MapMarker markerData={marker} key={index} theme={theme} simplify={simplifyIcons} setDestination={setDestination} setBottomSheet={setBottomSheet} setBottomSheetIsOpen={setBottomSheetIsOpen}/>
+                    <MapMarker markerData={marker} key={index} theme={dark?'dark':'default'} simplify={simplifyIcons} setDestination={setDestination} setBottomSheet={setBottomSheet} setBottomSheetIsOpen={setBottomSheetIsOpen}/>
                 ))}
                 {(GOOGLE_MAPS_APIKEY && destination && bottomSheetIsOpen) &&
                 <MapViewDirections
@@ -388,7 +376,7 @@ export default function Map({bookmarkReference, theme}:any) {
             <DetailsModal
                 modalVisible={modalVisible}
                 setModalVisible={setModalVisible}
-                data={bottomSheet}
+                item={bottomSheet}
             />
             </>
         </View>
