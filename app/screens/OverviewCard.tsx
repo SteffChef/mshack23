@@ -11,6 +11,7 @@ interface Props {
   categories: string[];
   activeCategory: string;
   setModalVisible: (x: boolean) => void;
+  setActiveItem: (x: number) => void;
   bookmarkReference: any;
 }
 
@@ -21,6 +22,7 @@ const OverviewCard = ({
   categories,
   activeCategory,
   setModalVisible,
+  setActiveItem,
   bookmarkReference,
 }: Props) => {
   const { colors } = useTheme();
@@ -32,7 +34,10 @@ const OverviewCard = ({
         borderColor: colors.border,
         backgroundColor: colors.card,
       }}
-      onPress={() => setModalVisible(true)}
+      onPress={() => {
+        setModalVisible(true);
+        setActiveItem(id);
+      }}
     >
       <View style={styles.topContainer}>
         <Text style={{ ...styles.titleText, color: colors.text }}>{name}</Text>
