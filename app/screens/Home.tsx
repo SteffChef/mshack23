@@ -58,6 +58,12 @@ const NavigationComponent = () => {
     return <Bookmarks data={data} bookmarkReference={bookmarkReference} />;
   };
 
+  const MapCall = () => {
+    const themeContext = useContext(ThemeContext);
+  
+    return <Map bookmarkReference={bookmarkReference} theme={themeContext.themeState} />;
+  };
+
   useEffect(() => {
     fetchData();
   }, []);
@@ -87,12 +93,6 @@ const NavigationComponent = () => {
       />
     </HomeLayout.Navigator>
   );
-};
-
-const MapCall = () => {
-  const themeContext = useContext(ThemeContext);
-
-  return <Map theme={themeContext.themeState} />;
 };
 
 const Home = () => {

@@ -10,7 +10,7 @@ import { Button, Card, Text } from 'react-native-paper';
 import { CustomDarkTheme, CustomLightTheme } from '../../colorScheme/Theme';
 import { useTheme } from '@react-navigation/native';
 
-export default function Map({theme}:any) {
+export default function Map({bookmarkReference, theme}:any) {
     const mapDefault:Array<any> = [
         {
             "featureType": "administrative.land_parcel",
@@ -300,6 +300,7 @@ export default function Map({theme}:any) {
     }, []);
 
     useEffect(() => {
+        {console.log(bookmarkReference.bookMarkedIDs)}
         if(bottomSheetIsOpen) {
             setMapSize("75%");
         } else {
@@ -359,7 +360,7 @@ export default function Map({theme}:any) {
                         onReady={(e) => setDistance(e.distance)}
                     />}
             </MapView>
-            {(bottomSheet !== null && bottomSheetIsOpen) &&
+            {(bottomSheet.id !== undefined && bottomSheetIsOpen) &&
                 <Card key={bottomSheet.id} style={{backgroundColor:colors.card, height:"26%", borderRadius:0}}>
                     <Card.Title 
                         title={<Text style={{color:colors.text}}> {bottomSheet.name} </Text>} 
@@ -369,8 +370,8 @@ export default function Map({theme}:any) {
                         style={{flexDirection:'row', justifyContent:'space-between'}}
                     >
                         <Text style={{color:colors.text}}>{distance.toFixed(1)} km von dir entfernt</Text>
-                        <TouchableOpacity onPress={() => setIsBookmarked(!isBookmarked)}>
-                            {isBookmarked ? (
+                        <TouchableOpacity onPress={() => bookmarkReference.handleBookmarks(bottomSheet.id)}>
+                            {bookmarkReference.bookMarkedIDs.includes(bottomSheet.id) ? (
                             <FontAwesome name="bookmark" size={24} color={colors.text} />
                             ) : (
                             <FontAwesome name="bookmark-o" size={24} color={colors.text} />
