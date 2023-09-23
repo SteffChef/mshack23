@@ -48,6 +48,7 @@ const DetailsModal = ({ modalVisible, setModalVisible, item }: Props) => {
           <Text
             style={{
               ...styles.description,
+              color: colors.texts,
               backgroundColor: colors.card,
               borderColor: colors.border,
             }}
@@ -97,22 +98,22 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
+    marginVertical: 15,
   },
   headerContainer: {
     flex: 1,
-    marginVertical: 20,
   },
   title: {
     fontSize: 28,
     fontWeight: "bold",
-    marginBottom: 10,
   },
   description: {
-    fontSize: 20,
-    marginBottom: 10,
+    fontSize: 18,
+    marginBottom: 20,
     borderWidth: 1,
     borderRadius: 20,
     padding: 10,
+    marginTop: 10,
   },
   openingHoursContainer: {
     marginBottom: 10,
