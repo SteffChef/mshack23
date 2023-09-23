@@ -4,7 +4,7 @@ import MapView from 'react-native-maps';
 import { StyleSheet, View } from 'react-native';
 import MapMarker from './MapMarker';
 import MapViewDirections from 'react-native-maps-directions';
-import Config from 'react-native-config';
+import { Button, Card, Text } from 'react-native-paper';
 
 export default function Map({theme}:any) {
     const mapDefault:Array<any> = [
@@ -256,8 +256,24 @@ export default function Map({theme}:any) {
     const [userLocation, setUserLocation] = useState();
     const [markers, setMarkers] = useState([])
     const [destination, setDestination] = useState(null);
-    const GOOGLE_MAPS_APIKEY = Config.GOOGLE_MAPS_APIKEY;
+    const [bottomSheet, setBottomSheet] = useState<MarkerDataInterface>({id:0, locationType:'', name:'', address:'', latitude:0, longitude:0, openingHours:'', infoLink:'', categories:[]});
+    const [bottomSheetIsOpen, setBottomSheetIsOpen] = useState(false);
+    const [mapSize, setMapSize] = useState<any>("100%");
+    const GOOGLE_MAPS_APIKEY = "AIzaSyDLTev5-fhyK1qG7q1MwNtE3uJKSpIlM0I";
 
+    interface MarkerDataInterface {
+        "id":number,
+        "locationType":string,
+        "name":string,
+        "address":string,
+        "latitude":number,
+        "longitude":number,
+        "openingHours":string,
+        "infoLink":string,
+        "carrier"?:string,
+        "comments"?:string,
+        "categories":Array<any>
+    }
 
     useEffect(() => {
         if (theme === 'dark') {
@@ -274,10 +290,19 @@ export default function Map({theme}:any) {
         .catch((error) => console.error(error))
     }, []);
 
+    useEffect(() => {
+        if(bottomSheetIsOpen) {
+            setMapSize("80%");
+        } else {
+            setMapSize("100%");
+        }
+    }, [bottomSheetIsOpen]);
+
     return (
         <View style={styles.container}>
+            <>
             <MapView   
-                style={styles.map}
+                style={{width: '100%', height: mapSize,}}
                 customMapStyle={mapTheme}
                 loadingEnabled={true}
                 showsUserLocation={true}
@@ -286,7 +311,9 @@ export default function Map({theme}:any) {
                 provider='google'
                 onUserLocationChange={(event) => {
                     const coordinates:any = event.nativeEvent.coordinate;
-                    setUserLocation(coordinates);
+                    if(!bottomSheetIsOpen) {
+                        setUserLocation(coordinates);
+                    }
                     if(!mapAlreadyChanged && coordinates.latitude && coordinates.longitude ) {
                         setRegion({
                             latitude: coordinates.latitude,
@@ -310,19 +337,31 @@ export default function Map({theme}:any) {
                 }}
                 >
                 {markers.map((marker, index) => (
-                    <MapMarker markerData={marker} key={index} theme={theme} simplify={simplifyIcons} setDestination={setDestination}/>
+                    <MapMarker markerData={marker} key={index} theme={theme} simplify={simplifyIcons} setDestination={setDestination} setBottomSheet={setBottomSheet} setBottomSheetIsOpen={setBottomSheetIsOpen}/>
                 ))}
-                {/*check that only called once, change to renderOnTap*/}
-                {(GOOGLE_MAPS_APIKEY && destination) &&
+                {(GOOGLE_MAPS_APIKEY && destination && bottomSheetIsOpen) &&
                 <MapViewDirections
-                      origin={userLocation}
-                      destination={destination}
-                      apikey={GOOGLE_MAPS_APIKEY}
-                      language="de"
-                      strokeWidth={3}
-                      strokeColor="hotpink"
+                        origin={userLocation}
+                        destination={destination}
+                        apikey={GOOGLE_MAPS_APIKEY}
+                        language="de"
+                        strokeWidth={3}
+                        strokeColor={theme === 'dark' ? '#fff' : '#000'}
+                        onStart={() => console.log('onStart')}
+                        onReady={() => console.log('onReady')}
+                        onError={() => console.log('GOT AN ERROR')}
                     />}
             </MapView>
+            {(bottomSheet !== null && bottomSheetIsOpen) &&
+                <Card key={bottomSheet.id}>
+                    <Card.Title title={bottomSheet.name} subtitle={bottomSheet.address} />
+                    <Card.Actions>
+                        <Button onPress={() => setBottomSheetIsOpen(false)}>Schließen</Button>
+                        <Button onPress={() => setBottomSheetIsOpen(false)}>Ok</Button>
+                    </Card.Actions>
+                </Card>
+            }
+            </>
         </View>
         );
     }
@@ -330,9 +369,5 @@ export default function Map({theme}:any) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-  },
-  map: {
-    width: '100%',
-    height: '100%',
-  },
+  }
 });
