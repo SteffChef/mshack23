@@ -67,6 +67,7 @@ const NavigationComponent = () => {
   useEffect(() => {
     fetchData();
   }, []);
+
   const MapIcon = ({ color }: any) => {
     return <FontAwesome5 name="map-pin" size={24} color={color} />
   }

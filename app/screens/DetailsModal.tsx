@@ -15,6 +15,9 @@ interface Props {
 const DetailsModal = ({ modalVisible, setModalVisible, item }: Props) => {
   const { colors } = useTheme();
   const navigation = useNavigation();
+  if(item === undefined){
+    return;
+  }
 
   return (
     <Modal

@@ -10,6 +10,8 @@ import { Button, Card, Text } from 'react-native-paper';
 import { CustomDarkTheme, CustomLightTheme } from '../../colorScheme/Theme';
 import { useTheme } from '@react-navigation/native';
 
+
+
 export default function Map({bookmarkReference, theme}:any) {
     const mapDefault:Array<any> = [
         {
@@ -300,7 +302,6 @@ export default function Map({bookmarkReference, theme}:any) {
     }, []);
 
     useEffect(() => {
-        {console.log(bookmarkReference.bookMarkedIDs)}
         if(bottomSheetIsOpen) {
             setMapSize("75%");
         } else {
@@ -371,7 +372,7 @@ export default function Map({bookmarkReference, theme}:any) {
                     >
                         <Text style={{color:colors.text}}>{distance.toFixed(1)} km von dir entfernt</Text>
                         <TouchableOpacity onPress={() => bookmarkReference.handleBookmarks(bottomSheet.id)}>
-                            {bookmarkReference.bookMarkedIDs.includes(bottomSheet.id) ? (
+                            {bookmarkReference.bookMarkedIds.includes(bottomSheet.id)? (
                             <FontAwesome name="bookmark" size={24} color={colors.text} />
                             ) : (
                             <FontAwesome name="bookmark-o" size={24} color={colors.text} />
