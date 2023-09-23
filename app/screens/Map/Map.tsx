@@ -276,12 +276,6 @@ export default function Map({theme}:any) {
         "categories":Array<any>
     }
 
-    interface MapSize {
-        width: string,
-        height: string,
-    }
-
-
     useEffect(() => {
         if (theme === 'dark') {
             setMapTheme(mapDark);
@@ -299,9 +293,9 @@ export default function Map({theme}:any) {
 
     useEffect(() => {
         if(bottomSheetIsOpen) {
-            setMapSize(styles.mapSmall);
+            setMapSize("80%");
         } else {
-            setMapSize(styles.mapFull);
+            setMapSize("100%");
         }
     }, [bottomSheetIsOpen]);
 
@@ -309,7 +303,7 @@ export default function Map({theme}:any) {
         <View style={styles.container}>
             <>
             <MapView   
-                style={mapSize}
+                style={{width: '100%', height: mapSize,}}
                 customMapStyle={mapTheme}
                 loadingEnabled={true}
                 showsUserLocation={true}
@@ -372,13 +366,5 @@ export default function Map({theme}:any) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-  },
-  mapSmall: {
-    width: '100%',
-    height: '80%',
-  },
-  mapFull: {
-    width: '100%',
-    height: '100%',
   }
 });
