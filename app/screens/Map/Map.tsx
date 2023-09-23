@@ -311,7 +311,9 @@ export default function Map({theme}:any) {
                 provider='google'
                 onUserLocationChange={(event) => {
                     const coordinates:any = event.nativeEvent.coordinate;
-                    setUserLocation(coordinates);
+                    if(!bottomSheetIsOpen) {
+                        setUserLocation(coordinates);
+                    }
                     if(!mapAlreadyChanged && coordinates.latitude && coordinates.longitude ) {
                         setRegion({
                             latitude: coordinates.latitude,
@@ -344,7 +346,7 @@ export default function Map({theme}:any) {
                         apikey={GOOGLE_MAPS_APIKEY}
                         language="de"
                         strokeWidth={3}
-                        strokeColor="hotpink"
+                        strokeColor={theme === 'dark' ? '#fff' : '#000'}
                         onStart={() => console.log('onStart')}
                         onReady={() => console.log('onReady')}
                         onError={() => console.log('GOT AN ERROR')}
