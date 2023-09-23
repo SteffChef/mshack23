@@ -1,12 +1,12 @@
 import { View, Pressable } from "react-native";
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Feather } from "@expo/vector-icons";
 import { ThemeContext } from "../colorScheme/ThemeContext";
 import { useTheme } from "@react-navigation/native";
 
 const ThemeToggle = () => {
   const themeCon = useContext(ThemeContext);
-  const { colors } = useTheme();
+  const { colors } = useTheme(); 
 
   return (
     <View style={{ marginRight: 10 }}>

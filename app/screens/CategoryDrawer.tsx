@@ -10,13 +10,13 @@ import CategoryIcon from "./CategoryIcon";
 import { useTheme } from "@react-navigation/native";
 
 const categories = [
-  "Kleidung",
-  "Haushaltsgegenstände",
-  "Spielzeug & Spiele",
-  "Bücher & Medien",
-  "Elektronik",
-  "Fahrräder",
-  "Möbel",
+  "clothing",
+  "household",
+  "toys",
+  "media",
+  "electronics",
+  "bicycles",
+  "furniture",
 ];
 
 interface Props {

@@ -3,7 +3,7 @@ import { NavigationContainer, useTheme } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import Overview from "./Overview";
 import Page2 from "./Page2";
-import Page3 from "./Page3";
+import Map from "./Map/Map";
 import { ThemeContext } from "../colorScheme/ThemeContext";
 import { CustomDarkTheme, CustomLightTheme } from "../colorScheme/Theme";
 import ThemeToggle from "./ThemeToggle";
@@ -22,6 +22,10 @@ const NavigationComponent = () => {
     return <FontAwesome name="bookmark" size={24} color={color} />;
   };
 
+  const MapIcon = ({ color }: any) => {
+    return <FontAwesome5 name="map-pin" size={24} color={color} />
+  }
+
   return (
     <HomeLayout.Navigator
       screenOptions={{ tabBarActiveTintColor: colors.primary }}
@@ -32,19 +36,26 @@ const NavigationComponent = () => {
         options={{ headerRight: ThemeToggle, tabBarIcon: HomeIcon }}
       />
       <HomeLayout.Screen
-        name="Page2"
-        component={Page2}
-        options={{ headerRight: ThemeToggle }}
+        name="Karte"
+        component={MapCall}
+        options={{ headerRight: ThemeToggle, tabBarIcon: MapIcon }}
       />
       <HomeLayout.Screen
         name="Lesezeichen"
-        component={Page3}
+        component={Page2}
         options={{ headerRight: ThemeToggle, tabBarIcon: BookmarkIcon }}
       />
     </HomeLayout.Navigator>
   );
 };
 
+const MapCall = () => {
+  const themeContext = useContext(ThemeContext);
+
+  return (
+    <Map theme={themeContext.themeState}/>
+  )
+}
 const Home = () => {
   const themeContext = useContext(ThemeContext);
 
