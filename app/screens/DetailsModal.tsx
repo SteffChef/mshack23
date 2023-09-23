@@ -5,6 +5,7 @@ import { FontAwesome } from "@expo/vector-icons";
 import CategoryDisplay from "./CategoryDisplay";
 import { useNavigation } from "@react-navigation/native";
 import { useTheme } from "@react-navigation/native";
+import { Foundation } from "@expo/vector-icons";
 
 interface Props {
   modalVisible: boolean;
@@ -48,7 +49,7 @@ const DetailsModal = ({ modalVisible, setModalVisible, item }: Props) => {
           <Text
             style={{
               ...styles.description,
-              color: colors.texts,
+              color: colors.text,
               backgroundColor: colors.card,
               borderColor: colors.border,
             }}
@@ -71,9 +72,27 @@ const DetailsModal = ({ modalVisible, setModalVisible, item }: Props) => {
               {item.openingHours}
             </Text>
           </View>
+          {item.infoLink ? (
+            <View style={styles.linkContainer}>
+              <TouchableOpacity
+                style={{
+                  ...styles.link,
+                  borderColor: colors.border,
+                  backgroundColor: colors.card,
+                }}
+              >
+                <Foundation name="web" size={24} color={colors.text} />
+                <Text style={{ marginRight: 5, color: colors.text }}>
+                  Link zur Website
+                </Text>
+              </TouchableOpacity>
+            </View>
+          ) : (
+            <></>
+          )}
         </View>
         <TouchableOpacity
-          style={styles.mapIcon}
+          style={{ ...styles.mapIcon, borderColor: colors.text }}
           onPress={() => {
             navigation.navigate("Karte");
             setModalVisible(false);
@@ -94,6 +113,18 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     padding: 16,
   },
+  link: {
+    borderWidth: 1,
+    flexDirection: "row",
+    padding: 10,
+    gap: 5,
+    alignItems: "center",
+    borderRadius: 20,
+  },
+  linkContainer: {
+    alignItems: "center",
+    marginTop: 5,
+  },
   titleContainer: {
     flexDirection: "row",
     justifyContent: "space-between",
@@ -108,7 +139,7 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
   description: {
-    fontSize: 18,
+    fontSize: 16,
     marginBottom: 20,
     borderWidth: 1,
     borderRadius: 20,
@@ -133,7 +164,6 @@ const styles = StyleSheet.create({
     marginTop: 16,
     borderRadius: 30,
     borderWidth: 2,
-    borderColor: "black",
     width: 60,
     height: 60,
     justifyContent: "center",
