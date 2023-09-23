@@ -3,12 +3,14 @@ import { View, StyleSheet } from "react-native";
 import { Marker } from "react-native-maps";
 import { FontAwesome5 } from '@expo/vector-icons';
 import { Feather } from '@expo/vector-icons';
+import { GetIcon } from "../CategoryIcon";
+import { Button, Card, Text } from 'react-native-paper';
 
-export default function MapMarker({ markerData, id, theme, simplify }:any) {
-
+export default function MapMarker({ markerData, id, theme, simplify, setDestination }:any) {
     const iconSize = 24;
 
     const [iconColor, setIconColor] = useState('black');
+    const [bottomSheetOpen, setBottomSheetOpen] = useState(false);
 
     useEffect(() => {
         if (theme === 'dark') {
@@ -18,33 +20,26 @@ export default function MapMarker({ markerData, id, theme, simplify }:any) {
         }
     }, [theme]);
 
-    const iconTable: { [key: string]: JSX.Element } = {
-        1: <FontAwesome5 name="tshirt" size={iconSize} color={iconColor} />,
-        2: <FontAwesome5 name="utensils" size={iconSize} color={iconColor} />,
-        3: <FontAwesome5 name="shopping-bag" size={iconSize} color={iconColor} />,
-        4: <FontAwesome5 name="home" size={iconSize} color={iconColor} />,
-    };
-
     function iconArrangement(categories: any) {
         if(simplify || categories.length === 0) {
             return (
-                <FontAwesome5 name="map-pin" size={24} color={iconColor} />
+                <FontAwesome5 name="map-pin" size={iconSize} color={iconColor} />
             );
         }
-        const lenght = Object.keys(categories).length;
+        const lenght = categories.length;
         switch (lenght) {
             case 1:
                 return (
                     <View style={[styles.oneCircle, {borderColor:iconColor}]}>
-                        {iconTable[categories[0].id]}
+                        {GetIcon(categories[0].name, iconSize, iconColor)}
                     </View>
                 );
             case 2:
                 return (
                     <View style={[styles.oneCircle, {borderColor:iconColor}]}>
                         <View style={styles.row}>
-                            {iconTable[categories[0].id]}
-                            {iconTable[categories[1].id]}
+                            {GetIcon(categories[0].name, iconSize, iconColor)}
+                            {GetIcon(categories[1].name, iconSize, iconColor)}
                         </View>
                     </View>
 
@@ -53,11 +48,11 @@ export default function MapMarker({ markerData, id, theme, simplify }:any) {
                 return (
                     <View style={[styles.twoCircle, {borderColor:iconColor}]}>
                         <View style={styles.row}>
-                            {iconTable[categories[0].id]}
-                            {iconTable[categories[1].id]}
+                            {GetIcon(categories[0].name, iconSize, iconColor)}
+                            {GetIcon(categories[1].name, iconSize, iconColor)}
                         </View>
                         <View style={styles.row}>
-                            {iconTable[categories[2].id]}
+                            {GetIcon(categories[2].name, iconSize, iconColor)}
                         </View>
                     </View>
                 );
@@ -66,31 +61,50 @@ export default function MapMarker({ markerData, id, theme, simplify }:any) {
                     <View style={[styles.twoCircle, {borderColor:iconColor}]}>
                         <View style={styles.row}
                         >
-                            {iconTable[categories[0].id]}
-                            {iconTable[categories[1].id]}
+                            {GetIcon(categories[0].name, iconSize, iconColor)}
+                            {GetIcon(categories[1].name, iconSize, iconColor)}
                         </View>
                         <View style={styles.row}
                         >
-                            {iconTable[categories[2].id]}
-                            <Feather name="more-horizontal" size={iconSize} color="black" />
+                            {GetIcon(categories[2].name, iconSize, iconColor)}
+                            <Feather name="more-horizontal" size={iconSize} color={iconColor} />
                         </View>
                     </View>
                 );
         }
     }
 
-    return (
-        <Marker
-            key={markerData.id}
-            coordinate={{
-                latitude: markerData.latitude,
-                longitude: markerData.longitude,
-            }}
-            title={markerData.name}
-        >
-            {iconArrangement(markerData.categories)}
-        </Marker>
-    );
+    if(markerData.latitude && markerData.longitude) {
+        return (
+            <>
+            <Marker
+                key={markerData.id}
+                coordinate={{
+                    latitude: markerData.latitude,
+                    longitude: markerData.longitude,
+                }}
+                title={markerData.name}
+                onPress={() => {setDestination({latitude: markerData.latitude, longitude: markerData.longitude}); setBottomSheetOpen(true);}}
+                onDeselect={() => {setDestination(null), setBottomSheetOpen(false);}}
+            >
+                {iconArrangement(markerData.categories)}
+            </Marker>
+            {bottomSheetOpen &&
+            <Card>
+                <Card.Title title={markerData.name} subtitle="Card Subtitle" />
+                <Card.Content>
+                    <Text variant="titleLarge">Card title</Text>
+                <   Text variant="bodyMedium">Card content</Text>
+                </Card.Content>
+                <Card.Actions>
+                    <Button>Cancel</Button>
+                    <Button>Ok</Button>
+                </Card.Actions>
+            </Card>
+            }
+        </>
+        );
+        }
     }
 
     const styles = StyleSheet.create({

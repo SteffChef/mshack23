@@ -3,6 +3,8 @@ import { useState, useEffect } from 'react';
 import MapView from 'react-native-maps';
 import { StyleSheet, View } from 'react-native';
 import MapMarker from './MapMarker';
+import MapViewDirections from 'react-native-maps-directions';
+import Config from 'react-native-config';
 
 export default function Map({theme}:any) {
     const mapDefault:Array<any> = [
@@ -248,11 +250,14 @@ export default function Map({theme}:any) {
     }
     
     const [mapTheme, setMapTheme] = useState(mapDefault);
-    const [initialRegion, setInitialRegion] = useState(msCoords)
     const [region, setRegion] = useState(msCoords)
     const [mapAlreadyChanged, setMapAlreadyChanged] = useState(false);
-    const [simplifyIcons, setSimplifyIcons] = useState(false);
-    const [markers, setMarkers] = useState([]);
+    const [simplifyIcons, setSimplifyIcons] = useState(true);
+    const [userLocation, setUserLocation] = useState();
+    const [markers, setMarkers] = useState([])
+    const [destination, setDestination] = useState(null);
+    const GOOGLE_MAPS_APIKEY = Config.GOOGLE_MAPS_APIKEY;
+
 
     useEffect(() => {
         if (theme === 'dark') {
@@ -274,7 +279,6 @@ export default function Map({theme}:any) {
             <MapView   
                 style={styles.map}
                 customMapStyle={mapTheme}
-                initialRegion={initialRegion}
                 loadingEnabled={true}
                 showsUserLocation={true}
                 showsMyLocationButton={true}
@@ -282,7 +286,8 @@ export default function Map({theme}:any) {
                 provider='google'
                 onUserLocationChange={(event) => {
                     const coordinates:any = event.nativeEvent.coordinate;
-                    if(!mapAlreadyChanged) {
+                    setUserLocation(coordinates);
+                    if(!mapAlreadyChanged && coordinates.latitude && coordinates.longitude ) {
                         setRegion({
                             latitude: coordinates.latitude,
                             longitude: coordinates.longitude,
@@ -291,18 +296,32 @@ export default function Map({theme}:any) {
                         });
                         setMapAlreadyChanged(true);
                     }
+                    else if(!coordinates.latitude && !coordinates.longitude) {
+                        setMapAlreadyChanged(true);
+                        setRegion(msCoords);
+                    }
                 }}
                 onRegionChange={(region) => {
-                    if(region.latitudeDelta > 0.01) {
+                    if(region.latitudeDelta > 0.03) {
                         setSimplifyIcons(true);
                     } else {
                         setSimplifyIcons(false);
                     }
                 }}
                 >
-            {markers.map((marker) => (
-                <MapMarker markerData={marker} id={marker} theme={theme} simplify={simplifyIcons}/>
-            ))}
+                {markers.map((marker, index) => (
+                    <MapMarker markerData={marker} key={index} theme={theme} simplify={simplifyIcons} setDestination={setDestination}/>
+                ))}
+                {/*check that only called once, change to renderOnTap*/}
+                {(GOOGLE_MAPS_APIKEY && destination) &&
+                <MapViewDirections
+                      origin={userLocation}
+                      destination={destination}
+                      apikey={GOOGLE_MAPS_APIKEY}
+                      language="de"
+                      strokeWidth={3}
+                      strokeColor="hotpink"
+                    />}
             </MapView>
         </View>
         );
