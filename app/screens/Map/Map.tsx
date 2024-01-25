@@ -9,7 +9,7 @@ import { FontAwesome } from "@expo/vector-icons";
 import { Button, Card, Text } from "react-native-paper";
 import { useTheme } from "@react-navigation/native";
 
-export default function Map({ bookmarkReference, markers }: any) {
+export default function Map({ bookmarkReference }: any) {
   const mapDefault: Array<any> = [
     {
       featureType: "administrative.land_parcel",
@@ -46,6 +46,70 @@ export default function Map({ bookmarkReference, markers }: any) {
         },
       ],
     },
+  ];
+
+  const markers: MarkerDataInterface[] = [
+    { 
+      id: 1,
+      locationType: "donate",
+      name: "Givebox Christuskirche",
+      address: "Ecke Hammerstraße / Friedrich-Ebert-Straße",
+      latitude: 51.942209,
+      longitude: 7.623405,
+      openingHours: "immer",
+      infoLink: "www.w.sw",
+      categories: [
+        {id: 1, name: "electronics"},
+        {id: 2, name: "household"},
+        {id: 3, name: "toys"},
+      ],
+    },
+    { 
+      id: 1,
+      locationType: "donate",
+      name: "Givebox Christuskirche",
+      address: "Ecke Hammerstraße / Friedrich-Ebert-Straße",
+      latitude: 51.952209,
+      longitude: 7.673405,
+      openingHours: "immer",
+      infoLink: "www.w.sw",
+      categories: [
+        {id: 1, name: "electronics"},
+        {id: 2, name: "household"},
+        {id: 3, name: "toys"},
+      ],
+    },
+    { 
+      id: 1,
+      locationType: "donate",
+      name: "Givebox Christuskirche",
+      address: "Ecke Hammerstraße / Friedrich-Ebert-Straße",
+      latitude: 51.955209,
+      longitude: 7.633305,
+      openingHours: "immer",
+      infoLink: "www.w.sw",
+      categories: [
+        {id: 1, name: "electronics"},
+        {id: 2, name: "household"},
+        {id: 3, name: "toys"},
+      ],
+    },
+    { 
+      id: 1,
+      locationType: "donate",
+      name: "Givebox Christuskirche",
+      address: "Ecke Hammerstraße / Friedrich-Ebert-Straße",
+      latitude: 51.942609,
+      longitude: 7.632405,
+      openingHours: "immer",
+      infoLink: "www.w.sw",
+      categories: [
+        {id: 1, name: "electronics"},
+        {id: 2, name: "household"},
+        {id: 3, name: "toys"},
+      ],
+    },
+    
   ];
 
   const mapDark: Array<any> = [
